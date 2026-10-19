@@ -1,0 +1,2423 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>أكاديمية الإمام الباجي</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F3F4F6;
+  --surface: #FFFFFF;
+  --surface2: #F8F9FA;
+  --ink: #1A1A1A;
+  --ink2: #555;
+  --ink3: #888;
+  --accent: #0D3B2E;
+  --accent2: #D4A843;
+  --border: #E5E5E5;
+  --radius: 10px;
+  --shadow: 0 2px 12px rgba(0,0,0,0.06);
+
+  /* colored boxes — near-white backgrounds, colored right border only */
+  --quran-bg: #F6FAF6; --quran-border: #1B7A3D; --quran-text: #1B7A3D;
+  --hadith-bg: #FDFAF6; --hadith-border: #8B4513; --hadith-text: #8B4513;
+  --poetry-bg: #FAF6FB; --poetry-border: #6A1B9A; --poetry-text: #6A1B9A;
+  --benefit-bg: #F5FAFA; --benefit-border: #00796B; --benefit-text: #00796B;
+  --warning-bg: #FDF7F6; --warning-border: #C62828; --warning-text: #C62828;
+  --def-bg: #F6F7FB; --def-border: #1A237E; --def-text: #1A237E;
+
+  /* tabs */
+  --tab-active-bg: #0D3B2E;
+  --tab-active-text: #FFFFFF;
+  --tab-inactive-bg: transparent;
+  --tab-inactive-text: #555;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0E0E0E;
+    --surface: #1E1E1E;
+    --surface2: #252525;
+    --ink: #E8E6E1;
+    --ink2: #AAA;
+    --ink3: #777;
+    --accent: #2E8B6E;
+    --accent2: #D4A843;
+    --border: #333;
+    --shadow: 0 2px 12px rgba(0,0,0,0.3);
+
+    --quran-bg: #1B3D20; --quran-border: #4CAF50; --quran-text: #A5D6A7;
+    --hadith-bg: #3E2200; --hadith-border: #CD7F32; --hadith-text: #FFCC80;
+    --poetry-bg: #2A0845; --poetry-border: #AB47BC; --poetry-text: #CE93D8;
+    --benefit-bg: #003333; --benefit-border: #26A69A; --benefit-text: #80CBC4;
+    --warning-bg: #3B0A0A; --warning-border: #EF5350; --warning-text: #EF9A9A;
+    --def-bg: #0D1440; --def-border: #5C6BC0; --def-text: #9FA8DA;
+
+    --tab-active-bg: #2E8B6E;
+    --tab-active-text: #FFF;
+    --tab-inactive-text: #AAA;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0E0E0E;
+  --surface: #1E1E1E;
+  --surface2: #252525;
+  --ink: #E8E6E1;
+  --ink2: #AAA;
+  --ink3: #777;
+  --accent: #2E8B6E;
+  --accent2: #D4A843;
+  --border: #333;
+  --shadow: 0 2px 12px rgba(0,0,0,0.3);
+
+  --quran-bg: #1B3D20; --quran-border: #4CAF50; --quran-text: #A5D6A7;
+  --hadith-bg: #3E2200; --hadith-border: #CD7F32; --hadith-text: #FFCC80;
+  --poetry-bg: #2A0845; --poetry-border: #AB47BC; --poetry-text: #CE93D8;
+  --benefit-bg: #003333; --benefit-border: #26A69A; --benefit-text: #80CBC4;
+  --warning-bg: #3B0A0A; --warning-border: #EF5350; --warning-text: #EF9A9A;
+  --def-bg: #0D1440; --def-border: #5C6BC0; --def-text: #9FA8DA;
+
+  --tab-active-bg: #2E8B6E;
+  --tab-active-text: #FFF;
+  --tab-inactive-text: #AAA;
+}
+
+
+/* ── STUDENT NAME ── */
+.student-name {
+  font-size: 13px;
+  opacity: 0.8;
+  font-weight: 400;
+  margin-top: 2px;
+  letter-spacing: 0.5px;
+}
+
+/* ── YEAR BAR ── */
+.year-bar {
+  background: var(--accent);
+  padding: 8px 16px 0;
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.year-bar::-webkit-scrollbar { display: none; }
+.year-chip {
+  flex-shrink: 0;
+  padding: 7px 16px;
+  border-radius: 10px 10px 0 0;
+  font-size: 12px;
+  font-weight: 600;
+  border: none;
+  background: rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.7);
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.year-chip.active {
+  background: var(--bg);
+  color: var(--ink);
+}
+.year-chip .yc-icon {
+  margin-left: 4px;
+  font-size: 13px;
+}
+
+/* ── MODE BAR (دروس / مرفقات) ── */
+.mode-bar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 8px 16px;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+.mode-chip {
+  padding: 7px 22px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  border: 1.5px solid var(--border);
+  background: var(--surface2);
+  color: var(--ink2);
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.mode-chip.active {
+  background: var(--accent2);
+  color: #1A1A1A;
+  border-color: var(--accent2);
+}
+.mode-chip .mc-icon { margin-left: 4px; }
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Noto Naskh Arabic', 'Amiri', serif;
+  background: var(--bg);
+  color: var(--ink);
+  direction: rtl;
+  text-align: right;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+.app-header {
+  background: var(--accent);
+  color: #FFF;
+  padding: 20px 16px 14px;
+  text-align: center;
+  position: relative;
+}
+.app-header h1 {
+  font-family: 'Amiri', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent2);
+  margin-bottom: 2px;
+}
+.app-header .subtitle {
+  font-size: 12px;
+  opacity: 0.75;
+  font-weight: 300;
+}
+.bismillah {
+  font-family: 'Amiri', serif;
+  font-size: 16px;
+  color: var(--accent2);
+  margin-bottom: 6px;
+}
+
+/* ── SUBJECT SELECTOR ── */
+.subject-bar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 16px;
+  overflow-x: auto;
+  display: flex;
+  gap: 8px;
+  -webkit-overflow-scrolling: touch;
+}
+.subject-bar::-webkit-scrollbar { display: none; }
+.subject-chip {
+  flex-shrink: 0;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  border: 1.5px solid var(--border);
+  background: var(--surface2);
+  color: var(--ink2);
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.subject-chip.active {
+  background: var(--accent);
+  color: #FFF;
+  border-color: var(--accent);
+}
+.subject-chip .chip-icon { margin-left: 4px; font-size: 14px; }
+
+/* ── LESSON SELECTOR ── */
+.lesson-bar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.lesson-select {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 2px solid var(--accent);
+  background: var(--surface);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  direction: rtl;
+}
+.lesson-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+/* ── VIEW TABS ── */
+.view-tabs {
+  display: flex;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 16px;
+}
+.view-tab {
+  flex: 1;
+  text-align: center;
+  padding: 8px 0 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--tab-inactive-text);
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s;
+}
+.view-tab.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+.view-tab .tab-icon { display: block; font-size: 16px; margin-bottom: 1px; }
+
+/* ── MAIN CONTENT ── */
+.content {
+  padding: 20px 18px;
+  max-width: 800px;
+  margin: 12px auto;
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+/* ── SUMMARY VIEW ── */
+.section-title {
+  font-family: 'Amiri', serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #FFF;
+  background: var(--accent);
+  margin: 18px 0 8px;
+  padding: 8px 14px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section-title:first-child { margin-top: 0; }
+.section-title .icon { font-size: 18px; }
+
+.box {
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin: 6px 0;
+  border: 1px solid var(--border);
+  border-right: 4px solid;
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--ink);
+}
+.box-label {
+  font-weight: 700;
+  font-size: 12px;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.box-quran {
+  background: var(--quran-bg);
+  border-right-color: var(--quran-border);
+}
+.box-quran .box-label { color: var(--quran-text); }
+.box-hadith {
+  background: var(--hadith-bg);
+  border-right-color: var(--hadith-border);
+}
+.box-hadith .box-label { color: var(--hadith-text); }
+.box-poetry {
+  background: var(--poetry-bg);
+  border-right-color: var(--poetry-border);
+}
+.box-poetry .box-label { color: var(--poetry-text); }
+.box-benefit {
+  background: var(--benefit-bg);
+  border-right-color: var(--benefit-border);
+}
+.box-benefit .box-label { color: var(--benefit-text); }
+.box-warning {
+  background: var(--warning-bg);
+  border-right-color: var(--warning-border);
+}
+.box-warning .box-label { color: var(--warning-text); }
+.box-def {
+  background: var(--def-bg);
+  border-right-color: var(--def-border);
+}
+.box-def .box-label { color: var(--def-text); }
+
+.summary-text {
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--ink);
+  margin: 4px 0;
+}
+.summary-text b { color: var(--accent); font-weight: 700; }
+.box b { color: var(--accent); font-weight: 700; }
+
+/* Tables */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 10px 0;
+  direction: rtl;
+  font-size: 13px;
+}
+.data-table th {
+  background: var(--accent);
+  color: #FFF;
+  padding: 8px 10px;
+  font-weight: 600;
+  text-align: right;
+}
+.data-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:nth-child(even) td { background: var(--surface2); }
+
+/* ── MAP VIEW ── */
+.map-container {
+  text-align: center;
+}
+.map-image-wrapper {
+  margin: 12px 0;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+.map-image-wrapper img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.map-caption {
+  padding: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink2);
+  background: var(--surface2);
+  border-top: 1px solid var(--border);
+}
+.no-map-msg {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--ink3);
+  font-size: 14px;
+}
+.no-map-msg .big-icon { font-size: 48px; display: block; margin-bottom: 12px; }
+
+/* ── AUTO MIND MAP ── */
+.mm-wrap { text-align: center; padding: 8px 0; }
+.mm-center {
+  display: inline-block;
+  background: var(--accent);
+  color: #FFF;
+  font-family: 'Amiri', serif;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 10px 24px;
+  border-radius: 24px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+.mm-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+  text-align: right;
+}
+.mm-branch {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+.mm-branch-title {
+  background: var(--accent2);
+  color: #FFF;
+  font-family: 'Amiri', serif;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 7px 12px;
+}
+.mm-items { padding: 8px 10px; }
+.mm-item {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--ink);
+  padding: 3px 0;
+  border-bottom: 1px dashed var(--border);
+}
+.mm-item:last-child { border-bottom: none; }
+.mm-item b { color: var(--accent); font-weight: 700; }
+
+/* Upload zone */
+.upload-zone {
+  border: 2px dashed var(--border);
+  border-radius: var(--radius);
+  padding: 30px 20px;
+  text-align: center;
+  cursor: pointer;
+  margin: 16px 0;
+  transition: all 0.2s;
+  color: var(--ink3);
+}
+.upload-zone:hover { border-color: var(--accent); background: var(--surface2); }
+.upload-zone .uz-icon { font-size: 36px; margin-bottom: 8px; display: block; }
+
+/* ── QUIZ VIEW ── */
+.quiz-progress {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+}
+.quiz-progress .score { font-weight: 700; color: var(--accent); }
+.progress-bar {
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  flex: 1;
+  margin: 0 12px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 3px;
+  transition: width 0.3s;
+}
+
+.quiz-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 18px;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+}
+.quiz-q-num {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent2);
+  margin-bottom: 4px;
+}
+.quiz-q-text {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  line-height: 1.7;
+}
+.quiz-opt {
+  display: block;
+  width: 100%;
+  text-align: right;
+  padding: 10px 14px;
+  margin-bottom: 6px;
+  border-radius: 8px;
+  border: 1.5px solid var(--border);
+  background: var(--surface2);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  line-height: 1.6;
+}
+.quiz-opt:hover:not(.answered) {
+  border-color: var(--accent);
+  background: var(--benefit-bg);
+}
+.quiz-opt.correct {
+  background: #C8E6C9 !important;
+  border-color: #2E7D32 !important;
+  color: #1B5E20 !important;
+}
+.quiz-opt.wrong {
+  background: #FFCDD2 !important;
+  border-color: #C62828 !important;
+  color: #B71C1C !important;
+}
+.quiz-opt.answered { cursor: default; }
+.quiz-exp {
+  margin-top: 8px;
+  padding: 10px 12px;
+  background: var(--benefit-bg);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--benefit-text);
+  display: none;
+  border-right: 3px solid var(--benefit-border);
+}
+.quiz-exp.show { display: block; }
+
+.quiz-result {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 24px;
+  text-align: center;
+  box-shadow: var(--shadow);
+  margin-top: 16px;
+}
+.quiz-result .big-score {
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--accent);
+}
+.quiz-result .result-label {
+  font-size: 14px;
+  color: var(--ink2);
+  margin: 8px 0;
+}
+.btn-retry {
+  padding: 10px 28px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #FFF;
+  border: none;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+/* ── REVISION VIEW ── */
+.rev-progress {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow);
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.rev-progress .rp-text { flex: 1; }
+
+.rev-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 10px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.rev-card.known {
+  opacity: 0.5;
+  border-color: #4CAF50;
+}
+.rev-card .rev-q {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+.rev-card .rev-q .q-icon { color: var(--accent2); font-size: 16px; flex-shrink: 0; }
+.rev-card .rev-a {
+  display: none;
+  margin-top: 8px;
+  padding: 10px 12px;
+  background: var(--benefit-bg);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--benefit-text);
+  line-height: 1.8;
+  border-right: 3px solid var(--benefit-border);
+}
+.rev-card .rev-a.show { display: block; }
+.rev-actions {
+  display: none;
+  margin-top: 8px;
+  text-align: left;
+}
+.rev-actions.show { display: block; }
+.btn-known {
+  padding: 6px 14px;
+  border-radius: 6px;
+  background: #4CAF50;
+  color: #FFF;
+  border: none;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-known.undo {
+  background: var(--ink3);
+}
+
+/* ── EMPTY / PLACEHOLDER ── */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--ink3);
+}
+.empty-state .es-icon { font-size: 48px; display: block; margin-bottom: 12px; }
+
+/* ── EXPORT BUTTON ── */
+.btn-export {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 24px auto 4px;
+  padding: 10px 28px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #FFF;
+  border: none;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.btn-export:hover { opacity: 0.85; }
+.btn-export .exp-icon { font-size: 16px; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 480px) {
+  .app-header h1 { font-size: 18px; }
+  .content { padding: 12px; }
+  .section-title { font-size: 17px; }
+}
+</style>
+</head>
+<body>
+<div class="app-header">
+  <div class="bismillah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+  <h1>أكاديمية الإمام الباجي</h1>
+  <div class="subtitle">ملخصات ومراجعات</div>
+  <div class="student-name">إبراهيم قلات</div>
+</div>
+<div class="year-bar" id="yearBar"></div>
+<div class="subject-bar" id="subjectBar"></div>
+<div class="mode-bar" id="modeBar"></div>
+
+<div class="lesson-bar" id="lessonBar">
+  <span class="lesson-label">الدرس:</span>
+  <select class="lesson-select" id="lessonSelect"></select>
+</div>
+
+<div class="view-tabs" id="viewTabs">
+  <div class="view-tab active" data-view="summary">
+    <span class="tab-icon">📝</span>الملخص
+  </div>
+  <div class="view-tab" data-view="map">
+    <span class="tab-icon">🗺️</span>الخريطة
+  </div>
+  <div class="view-tab" data-view="quiz">
+    <span class="tab-icon">✅</span>اختبار
+  </div>
+  <div class="view-tab" data-view="revision">
+    <span class="tab-icon">🔄</span>المراجعة
+  </div>
+</div>
+
+<div class="content" id="mainContent"></div>
+
+<script>
+
+/* ════════════════════════════════════════════════════════
+   DATA MODEL
+   ════════════════════════════════════════════════════════ */
+const YEARS = [
+  { id: "y1", name: "السنة الأولى", icon: "١" },
+  { id: "y2", name: "السنة الثانية", icon: "٢" },
+  { id: "y3", name: "السنة الثالثة", icon: "٣" },
+  { id: "y4", name: "السنة الرابعة", icon: "٤" },
+  { id: "dawarat", name: "دورات متنوعة", icon: "📚" }
+];
+
+const SUBJECTS_BY_YEAR = {
+  y1: [
+    { id: "sira",    name: "السيرة النبوية",    icon: "📜", sheikh: "ياسين العمري" },
+    { id: "tajwid",  name: "التجويد",           icon: "📖", sheikh: "يونس بوراس" },
+    { id: "tawhid",  name: "التوحيد والعقيدة",  icon: "🕌", sheikh: "نبيل كزناي" },
+    { id: "nahw",    name: "النحو",             icon: "✏️", sheikh: "البشير عصام المراكشي" },
+    { id: "tazkia",  name: "التزكية والأخلاق",  icon: "🌿", sheikh: "وجدان علي" },
+    { id: "fiqh",    name: "الفقه",             icon: "⚖️", sheikh: "يونس بوعوام" },
+    { id: "adab",    name: "آداب طالب العلم",   icon: "🎓", sheikh: "" }
+  ],
+  y2: [],
+  y3: [],
+  y4: [],
+  dawarat: []
+};
+
+const LESSONS = {
+  sira: [
+    {
+      num: 1,
+      title: "مدخل إلى علم السيرة النبوية والمبادئ العشرة",
+      summary: [
+        {
+          heading: "مدخل: لماذا ندرس السيرة النبوية؟",
+          items: [
+            { type: "text", content: "حياة النبي ﷺ هي <b>الترجمة العملية</b> لجميع العلوم الشرعية التي يدرسها المسلم: في الجانب الإيماني والعبادي (التوحيد، الصلاة، الزكاة، الصيام، الحج)، وفي باب البيوع والمعاملات المالية، وفي الجانب الأخلاقي والسلوكي (معاملته ﷺ لأهله وجيرانه والمخالف والعدو المحارب والذمي والمعاهد)." },
+            { type: "quran", content: "﴿ لَقَدْ كَانَ لَكُمْ فِي رَسُولِ اللَّهِ أُسْوَةٌ حَسَنَةٌ ﴾" },
+            { type: "benefit", content: "قال بعض أهل العلم: إنّ مما نعانيه اليوم من أعظم أسبابه بُعدنا عن مدارسة سيرة النبي ﷺ على الوجه الصحيح." }
+          ]
+        },
+        {
+          heading: "تاريخ التأليف في السيرة النبوية",
+          items: [
+            { type: "def", content: "<b>التدوين:</b> بدأ تدوين أحداث حياة النبي ﷺ مع مبعثه ﷺ — لا مع مولده — لأنه لم يكن أحد يعلم أنّ هذا الغلام سيكون له ذلك الشأن بعد ٤٠ سنة، والعرب كانت تنقل الأحداث شفهيًّا ولا تهتم كثيرًا بالكتابة." },
+            { type: "def", content: "<b>التأليف:</b> بدأ في زمن خلافة معاوية رضي الله عنه، في عهد كبار التابعين." },
+            { type: "text", content: "واضعو اللبنات الأولى هما: <b>عروة بن الزبير</b> و<b>أبان بن عثمان</b> رضي الله عنهم. ثم تتابع التأليف في زمن التابعين." }
+          ]
+        },
+        {
+          heading: "أبرز المؤلفين",
+          items: [
+            { type: "table", headers: ["المؤلِّف","إسهامه"], rows: [
+              ["محمد بن إسحاق","عمدة المؤلفين في السيرة — جمع المرويات وبوّبها أبوابًا (من المولد إلى المبعث، ثم زمن الرسالة، ثم المغازي)"],
+              ["عبد الملك بن هشام","هذّب سيرة ابن إسحاق، وسيرته هي المعروفة بـ«سيرة ابن هشام»"]
+            ]},
+            { type: "benefit", content: "أحداث السيرة النبوية لا تُضاف إليها أحداث جديدة — فهي محصورة معلومة مدققة محققة. الإضافات تكون من حيث استنباط الدروس والمقاربات وطرق العرض والتبويب." }
+          ]
+        },
+        {
+          heading: "مراحل دراسة السيرة النبوية",
+          items: [
+            { type: "table", headers: ["المرحلة","الوصف"], rows: [
+              ["١. مرحلة التأسيس","أول مرحلة يبدأ بها الطالب"],
+              ["٢. مرحلة التصوّر","تكوين تصوّر عام حول السيرة"],
+              ["٣. مرحلة البناء","التعمق والتفصيل"],
+              ["٤. مرحلة التخصص","التخصص في جانب من السيرة — مثال: كتاب المغازي للواقدي"]
+            ]}
+          ]
+        },
+        {
+          heading: "المبادئ العشرة لعلم السيرة النبوية",
+          items: [
+            { type: "poetry", content: "إنّ مبادِئَ كلِّ فنٍّ عَشَرَهْ ● الحَدُّ والموضوعُ ثُمَّ الثَّمَرَهْ\nونِسبةٌ وفَضلُهُ والوَاضِعْ ● والاسمُ الاستِمدادُ حُكمُ الشارِعْ\nمَسائلٌ — والبعضُ بالبعضِ اكتَفَى ● ومَن دَرَى الجميعَ حَازَ الشَّرَفَا" },
+            { type: "benefit", content: "فائدة تحصيل المبادئ العشرة: ① رفع الجهل عن الطالب ② فَهْم الخطاب المتعلق بذلك العلم ③ القدرة على الحديث عنه بشكل عام لمن لا يعرفه." }
+          ]
+        },
+        {
+          heading: "١. الحَدّ (التعريف)",
+          items: [
+            { type: "def", content: "<b>الحدّ لغةً:</b> التعريف — وضع حدود للمفهوم تجعله مستقلًّا عن غيره ومعرَّفًا في ذاته." },
+            { type: "def", content: "<b>حدّ السيرة النبوية:</b> سَرْدٌ لأحوال النبي ﷺ منذ ولادته إلى يوم وفاته، مرورًا ببعثته، مع التفصيل والأمانة في الأداء." },
+            { type: "def", content: "<b>تعريف آخر (الحافظ ابن حجر وغيره):</b> علمٌ يُعرف به أيامُ ومغازي وأحوالُ النبي ﷺ تفصيلًا، منذ ولادته ونشأته إلى أن لحق بالرفيق الأعلى." },
+            { type: "quran", content: "﴿ وَذَكِّرْهُمْ بِأَيَّامِ اللَّهِ ﴾ [إبراهيم] — «الأيام» عند العرب: الأحداث العظيمة الكبرى التي يُؤرَّخ بها." }
+          ]
+        },
+        {
+          heading: "٢. الموضوع",
+          items: [
+            { type: "def", content: "<b>موضوع السيرة النبوية:</b> حياة رسول الله ﷺ بكل بساطة — الأمور التي يتمحور حولها هذا العلم." }
+          ]
+        },
+        {
+          heading: "٣. الثمرة",
+          items: [
+            { type: "text", content: "الثمرة هي ما يرجوه القارئ والطالب من دراسة السيرة. وهي مرتبطة بالنيّة:" },
+            { type: "hadith", content: "قال ﷺ: «إنّما الأعمال بالنيّات وإنّما لكلّ امرئٍ ما نوى» — متفق عليه من حديث عمر رضي الله عنه." },
+            { type: "table", headers: ["النيّة","التوضيح"], rows: [
+              ["نيل رضا الله عز وجل","أعظم النيّات وأولاها"],
+              ["معرفة النبي ﷺ","معرفته تعظّم حبّه في قلب المسلم"],
+              ["الاقتداء به ﷺ","كما أمر الله تعالى بالأسوة الحسنة"],
+              ["معرفة معاملاته ﷺ","مع أصحابه وخصومه، في الاستضعاف والتمكين، مع الأطفال والكبار"]
+            ]},
+            { type: "hadith", content: "قال ﷺ: «لا يؤمن أحدكم حتى أكون أحبَّ إليه من والده وولده والناس أجمعين»" },
+            { type: "benefit", content: "أحال الشيخ على كتاب <b>«الخلاصة البهية بترتيب أحداث السيرة النبوية»</b> للدكتور وحيد بن عبد السلام بالي — ففي مقدمته سرد ما لا يقلّ عن ٥٠ نيّةً يمكن أن ينويها المسلم عند دراسة السيرة." }
+          ]
+        },
+        {
+          heading: "٤. النسبة",
+          items: [
+            { type: "def", content: "<b>نسبة السيرة النبوية:</b> هي بمثابة الفرع مقارنةً بالأصل. الأصل في العلوم الشرعية هو الوحي (القرآن والسنة)، والسيرة تستمدّ منهما، فهي فرع عنهما." }
+          ]
+        },
+        {
+          heading: "٥. الفضل",
+          items: [
+            { type: "def", content: "<b>شرف العلم من شرف المعلوم:</b> فإذا كان المعلوم هو حياة النبي ﷺ — فعلى قدر شرف حياته يكون شرف علم السيرة." },
+            { type: "quran", content: "﴿ لَعَمْرُكَ إِنَّهُمْ لَفِي سَكْرَتِهِمْ يَعْمَهُونَ ﴾ — قَسَمٌ من الله بحياة رسوله ﷺ، وهل يُقسِم الربّ إلا بشيء عظيم؟" }
+          ]
+        },
+        {
+          heading: "٦. الواضع",
+          items: [
+            { type: "text", content: "بدأ التأليف في زمن خلافة معاوية رضي الله عنه، مع <b>عروة بن الزبير</b> و<b>أبان بن عثمان</b>، ثم جاء <b>محمد بن إسحاق</b> كمرجع رئيسي، ثم هذّبه <b>عبد الملك بن هشام</b>." }
+          ]
+        },
+        {
+          heading: "٧. الاسم",
+          items: [
+            { type: "def", content: "يسمّى: <b>علم السيرة النبوية</b>، ومنهم من يسميه <b>علم المغازي</b>، ومنهم من يسميه <b>علم حياة الرسول ﷺ</b>." },
+            { type: "benefit", content: "المتقدمون كانوا يُطلقون اسم «الفنّ» على فروع العلوم ويتركون اسم «العلم» لما تعلق بالوحي مباشرة، من باب التعظيم لا غير." }
+          ]
+        },
+        {
+          heading: "٨. الاستمداد (المصادر)",
+          items: [
+            { type: "table", headers: ["المصدر","البيان"], rows: [
+              ["القرآن الكريم","المصدر الأول والأساس"],
+              ["السنة النبوية","الوحي الثاني"],
+              ["علم الجغرافيا","لفهم بُعد المكان — مثال: تحويل القبلة يستلزم معرفة موقع مكة جنوب المدينة وبيت المقدس شمالها"],
+              ["المصادر التاريخية","ما دوّنه المؤرخون"]
+            ]}
+          ]
+        },
+        {
+          heading: "٩. حكم دراسته",
+          items: [
+            { type: "def", content: "<b>فرض على الكفاية:</b> إذا قام به العدد الذي يكفي سقط الإثم عن الباقي، وإذا لم يقم به أحد أثِم الجميع." },
+            { type: "warning", content: "معرفة شيء من حياة النبي ﷺ فرض عين على كل مسلم — أما دراسة العلم كعلم مبوَّب فهو فرض كفاية. والعدد المطلوب يجب أن يكفي لتعليم الأمة." }
+          ]
+        },
+        {
+          heading: "١٠. المسائل",
+          items: [
+            { type: "table", headers: ["طريقة التقسيم","المثال"], rows: [
+              ["بحسب السنوات","السنة الأولى من الهجرة، الثانية، الثالثة..."],
+              ["بحسب المراحل","من المولد إلى الرضاع، إلى المبعث، المغازي..."],
+              ["بحسب الفصول","أبواب تفصيلية داخل كل مرحلة"]
+            ]}
+          ]
+        }
+      ],
+      quiz: [
+        { q: "ما حدّ السيرة النبوية كما ذكره الشيخ؟", opts: ["سرد لغزوات النبي ﷺ فقط", "سرد لأحوال النبي ﷺ منذ ولادته إلى وفاته مع التفصيل والأمانة", "علم يدرس أحاديث النبي ﷺ ويصنّفها", "تاريخ الخلافة الراشدة"], c: 1, exp: "الحدّ هو: سرد لأحوال النبي ﷺ منذ ولادته إلى يوم وفاته مرورًا ببعثته مع التفصيل والأمانة في الأداء." },
+        { q: "لماذا لم يبدأ تدوين أحداث السيرة مع مولد النبي ﷺ؟", opts: ["لأن الكتابة لم تكن معروفة", "لأن النبي ﷺ نهى عن ذلك", "لأن الصحابة لم يهتموا بالسيرة", "لأنه لم يكن أحد يعلم أن هذا الغلام سيكون له شأن بعد ٤٠ سنة"], c: 3, exp: "العرب كانت تنقل شفهيًّا، ولم يكن أحد يعلم بمكانة هذا الغلام المستقبلية." },
+        { q: "من أوائل من ألّف في السيرة النبوية؟", opts: ["عروة بن الزبير وأبان بن عثمان", "محمد بن إسحاق وابن هشام", "البخاري ومسلم", "ابن كثير والذهبي"], c: 0, exp: "واضعو اللبنات الأولى هما عروة بن الزبير وأبان بن عثمان رضي الله عنهم." },
+        { q: "ما إسهام محمد بن إسحاق في علم السيرة؟", opts: ["اختصر السيرة في كتاب صغير", "هذّب سيرة ابن هشام", "جمع المرويات وبوّبها أبوابًا وصار عمدة المؤلفين", "أضاف أحداثًا جديدة من عنده"], c: 2, exp: "محمد بن إسحاق جمع المرويات وبوّب السيرة أبوابًا (مولد، مبعث، مغازي) وصار عمدة أهل السير." },
+        { q: "ما دور عبد الملك بن هشام؟", opts: ["هذّب سيرة ابن إسحاق", "ألّف السيرة من الصفر", "جمع الأحاديث الصحيحة فقط", "ترجم السيرة إلى لغات أخرى"], c: 0, exp: "سيرة ابن هشام هي تهذيب لسيرة محمد بن إسحاق." },
+        { q: "ما هي مراحل دراسة السيرة الأربع؟", opts: ["المطالعة، الحفظ، التطبيق، التدريس", "القراءة، الفهم، المراجعة، الاختبار", "الابتدائي، المتوسط، الثانوي، الجامعي", "التأسيس، التصوّر، البناء، التخصص"], c: 3, exp: "المراحل هي: التأسيس ← التصوّر ← البناء ← التخصص." },
+        { q: "ما موضوع علم السيرة النبوية؟", opts: ["تاريخ الإسلام العام", "أحاديث النبي ﷺ", "حياة رسول الله ﷺ", "فقه العبادات"], c: 2, exp: "الموضوع ببساطة هو حياة رسول الله ﷺ." },
+        { q: "ما حكم دراسة السيرة النبوية كعلم؟", opts: ["فرض على الكفاية", "فرض عين على كل مسلم", "سنة مستحبة", "مباح لا ثواب فيه"], c: 0, exp: "هو فرض كفاية — إذا قام به من يكفي سقط الإثم عن الباقي." },
+        { q: "بماذا أقسم الله تعالى دلالةً على فضل السيرة؟", opts: ["بالقرآن الكريم", "بيوم القيامة", "بالكعبة المشرفة", "بحياة رسول الله ﷺ (لَعَمْرُكَ)"], c: 3, exp: "أقسم الله بحياة نبيه ﷺ في قوله: ﴿لَعَمْرُكَ إنهم لفي سكرتهم يعمهون﴾ — وشرف العلم من شرف المعلوم." },
+        { q: "ما نسبة علم السيرة بالنسبة للعلوم الشرعية الأخرى؟", opts: ["هو الأصل وغيره فرع", "هو فرع عن الأصل (القرآن والسنة)", "هو مستقل تمامًا عن غيره", "هو جزء من علم الحديث فقط"], c: 1, exp: "نسبته بمثابة الفرع مقارنة بالأصل (الوحي: القرآن والسنة)." },
+        { q: "ما المصدر الأول لعلم السيرة النبوية؟", opts: ["كتب التاريخ", "علم الجغرافيا", "الشعر الجاهلي", "القرآن الكريم"], c: 3, exp: "المصدر الأول هو القرآن الكريم، ثم السنة النبوية." },
+        { q: "لماذا يُعدّ علم الجغرافيا من مصادر السيرة؟", opts: ["لأن النبي ﷺ كان جغرافيًّا", "لأن الجغرافيا علم شرعي", "لفهم بُعد المكان — كتحويل القبلة الذي يستلزم معرفة مواقع مكة والمدينة وبيت المقدس", "لمعرفة أسماء البلدان القديمة فقط"], c: 2, exp: "مثّل الشيخ بتحويل القبلة: فهم ثقل هذا الخبر يستلزم معرفة أن مكة جنوب المدينة وبيت المقدس شمالها." }
+      ],
+      revision: [
+        { q: "ما حدّ السيرة النبوية؟", a: "سرد لأحوال النبي ﷺ منذ ولادته إلى يوم وفاته، مرورًا ببعثته، مع التفصيل والأمانة في الأداء. وقيل: علم يُعرف به أيام ومغازي وأحوال النبي ﷺ تفصيلًا." },
+        { q: "لماذا ندرس السيرة النبوية؟", a: "لأن حياة النبي ﷺ هي الترجمة العملية لجميع العلوم الشرعية في جوانبها الإيمانية والعبادية والمعاملاتية والأخلاقية." },
+        { q: "متى بدأ التأليف في السيرة النبوية ومن أوائل من ألّف؟", a: "بدأ في زمن خلافة معاوية رضي الله عنه. وأوائل من ألّف: عروة بن الزبير وأبان بن عثمان. ثم جاء محمد بن إسحاق فكان عمدة المؤلفين، ثم هذّبه ابن هشام." },
+        { q: "ما الفرق بين التدوين والتأليف في السيرة؟", a: "التدوين (تسجيل الأحداث) بدأ مع مبعث النبي ﷺ. أما التأليف (صناعة العلم كعلم مبوَّب) فبدأ في عهد التابعين." },
+        { q: "ما المراحل الأربع لدراسة السيرة؟", a: "١. التأسيس ← ٢. التصوّر ← ٣. البناء ← ٤. التخصص (مثال: كتاب المغازي للواقدي)." },
+        { q: "اذكر أبيات المبادئ العشرة.", a: "إنّ مبادئ كلّ فنٍّ عشرهْ ● الحدّ والموضوع ثم الثمرهْ\nونسبةٌ وفضله والواضعْ ● والاسم الاستمداد حكم الشارعْ\nمسائلٌ — والبعض بالبعض اكتفى ● ومن درى الجميع حاز الشرفا" },
+        { q: "ما ثمرة دراسة السيرة وما أهم النيّات؟", a: "النيّات: نيل رضا الله ﷻ، معرفة النبي ﷺ لتعظيم حبّه، الاقتداء به، معرفة معاملاته في مختلف الأحوال. واستدل بحديث: «إنما الأعمال بالنيات»." },
+        { q: "ما نسبة وفضل علم السيرة؟", a: "النسبة: فرع عن الأصل (القرآن والسنة). الفضل: شرف العلم من شرف المعلوم، وقد أقسم الله بحياة نبيه ﷺ: ﴿لعمرك﴾." },
+        { q: "ما مصادر السيرة النبوية؟", a: "القرآن الكريم (المصدر الأول)، السنة النبوية، علم الجغرافيا (لفهم بُعد المكان)، المصادر التاريخية." },
+        { q: "ما حكم دراسة السيرة وما الفرق بينه وبين معرفة أخبار النبي ﷺ؟", a: "دراسة العلم كعلم مبوّب: فرض كفاية. أما معرفة شيء من حياة النبي ﷺ فهي فرض عين على كل مسلم." },
+        { q: "ما مسائل علم السيرة؟", a: "أبوابها وفصولها — تُقسّم بحسب السنوات، أو بحسب المراحل (مولد، رضاع، مبعث، مغازي...)، أو بحسب الفصول التفصيلية." },
+        { q: "ما فائدة تحصيل المبادئ العشرة؟", a: "① رفع الجهل ② فَهم الخطاب المتعلق بذلك العلم ③ القدرة على الحديث عنه بشكل عام." }
+      ],
+      maps: [
+        { caption: "مدخل إلى السيرة النبوية", dataUrl: "img/map_sira_1.png" },
+        { caption: "المبادئ العشرة — الجزء الأول (الحدّ، الموضوع، الثمرة)", dataUrl: "img/map_sira_2.png" },
+        { caption: "المبادئ العشرة — الجزء الثاني (النسبة إلى المسائل)", dataUrl: "img/map_sira_3.png" }
+      ]
+    },
+    {
+      num: 2,
+      title: "صاحب الأرجوزة المئية ومراحل دراسة السيرة النبوية",
+      summary: [
+        {
+          heading: "ترجمة ناظم الأرجوزة المئية",
+          items: [
+            { type: "def", content: "<b>القاضي علي بن علي بن محمد بن أبي العِزّ الحنفي الدمشقي</b> رحمه الله — وُلد سنة 731هـ وتوفي سنة 792هـ، فعاش 61 سنة." },
+            { type: "text", content: "عُرف بالقاضي ابن أبي العز لأنه وَلِي مهمة القضاء، وكان له باع طويل في العلوم الشرعية." },
+            { type: "benefit", content: "من أبرز <b>شيوخه</b>: الحافظ المفسّر العلّامة <b>ابن كثير</b> رحمه الله — وقد تأثر بشيخه حتى في بعض المصطلحات والاختيارات التاريخية." },
+            { type: "text", content: "مثال على تأثره بابن كثير: ابن كثير سمّى السيرة في كتابه البداية والنهاية <b>«الفصول»</b>، فاستعمل ابن أبي العز نفس اللفظة: «وبعدها كسيرة الرسول منظومةٌ موجزة <b>الفصول</b>». وكذلك مال لقول شيخه في أن الحج فُرض في السنة السادسة للهجرة (وغيره يرى التاسعة)." },
+            { type: "text", content: "من <b>أشهر مؤلفاته</b>: شرح العقيدة الطحاوية — وهو من أشهر شروحها وأجودها." }
+          ]
+        },
+        {
+          heading: "محنة القاضي ابن أبي العز الحنفي",
+          items: [
+            { type: "text", content: "نشأ في أسرة تنتهج المذهب الحنفي فقهيًّا، وبلغ مبلغًا في التفقه جعله مؤهلًا للخروج من رِبقة التقليد، فكان يخالف المذهب في بعض المسائل — وهذا لا يسوغ إلا للعلماء الراسخين." },
+            { type: "warning", content: "كانت له اعتراضات فقهية لم تُعجب بعض أقرانه من أهل الحسد، <b>فألّبوا عليه السلطان فسُجن وعُزل عن القضاء والإمامة والخطابة</b>. ثم تدخّل جمع من الفضلاء فأُخرج من السجن وأُعيد إلى مركز القضاء والخطابة إلى أن توفاه الله." },
+            { type: "benefit", content: "قال الشافعي رحمه الله لما سُئل: أيّهما أفضل للعبد أن يُمَكَّن أم أن يُبتلى؟ قال: <b>«لا يُمَكَّن حتى يُبتلى»</b>. ولذلك تجدون في تراجم العلماء دائمًا فقرة <b>«محنته»</b>." }
+          ]
+        },
+        {
+          heading: "أسباب محن العلماء",
+          items: [
+            { type: "text", content: "<b>أسباب محن العلماء ثلاثة:</b>" },
+            { type: "table", headers: ["السبب", "المثال الذي ذكره الشيخ"], rows: [["مخالفون في العقيدة يقتربون من السلطة فيؤلّبون السلطان", "الإمام أحمد — في زمن المأمون والمعتصم والواثق"], ["عدم رضوخ العالم لأهواء السلطان", "الإمام مالك — مع والي المدينة"], ["حسد الأقران القريبين من السلطة يتأوّلون كلام العالم تأويلًا فاسدًا", "الإمام البخاري — مع الذُّهلي"]] },
+            { type: "text", content: "قال الإمام مالك رحمه الله قولته الشهيرة: <b>«من كان يعرفني فقد عرفني، ومن لم يعرفني فأنا مالك بن أنس الأصبحي، وأُفتي وأقول: طلاق المُكرَه لا يقع»</b>." },
+            { type: "text", content: "وكذلك عاش كلٌّ من <b>أبي حنيفة والشافعي</b> رحمهما الله محنًا — فابتُلوا فثبّتهم الله فمكّن الله عز وجل لهم بعد ذلك." }
+          ]
+        },
+        {
+          heading: "عرض العمر لا طوله",
+          items: [
+            { type: "text", content: "كان الدكتور فريد الأنصاري رحمه الله يقول: <b>إنما ميزة الأعمار ليست بالطول وإنما بالعَرض</b>. فالحق سبحانه يتحدث عن عَرض الجنة لا طولها." },
+            { type: "quran", content: "﴿ سَارِعُوا إِلَىٰ مَغْفِرَةٍ مِّن رَّبِّكُمْ وَجَنَّةٍ <b>عَرْضُهَا</b> السَّمَاوَاتُ وَالْأَرْضُ ﴾ وفي آية أخرى: ﴿ سَابِقُوا إِلَىٰ مَغْفِرَةٍ مِّن رَّبِّكُمْ وَجَنَّةٍ <b>عَرْضُهَا كَعَرْضِ</b> السَّمَاءِ وَالْأَرْضِ ﴾" },
+            { type: "benefit", content: "الإمام <b>النووي</b> رحمه الله توفي وعمره <b>45 سنة هجرية</b> فقط (≈ 41-42 ميلادية)، وخلّف علمًا زاخرًا ومؤلفات يصعب حصرها، بلغ بها الآفاق. فالعبرة بما يُنتَج في العمر لا بعدد الأيام." }
+          ]
+        },
+        {
+          heading: "الفرق بين الأرجوزة والقصيدة",
+          items: [
+            { type: "def", content: "كلام الناس إما <b>نثر</b> (كالكتب والأحاديث العادية) وإما <b>شعر</b> (منظوم وفق ميزان وتفعيلات وروي وقافية). والشعر ينقسم إلى أقسام منها الأرجوزة والقصيدة." },
+            { type: "table", headers: ["المعيار", "الأرجوزة", "القصيدة"], rows: [["البحر", "بحر الرَّجَز (مُسْتَفْعِلُنْ×٣)", "بحورها أكبر وأشمل"], ["الطول", "قصيرة عمومًا", "قد تكون أطول أو أقصر"], ["البنية", "كل مصراع يشكّل بيتًا", "لها مقدمة وبنية متكاملة"], ["الموضوع", "تتطرق لموضوع واحد عمومًا", "لها وحدة موضوع وقافية واحدة"], ["الميزة", "موسيقية وسلاسة تُسهّل الحفظ", "تمضي على رويّ واحد بقافية واحدة"]] },
+            { type: "text", content: "الأرجوزة هي <b>أول أشكال الشعر التي عرفتها العرب</b>. لما صارت تجمّعات حضرية كبيرة، استقلّ الشعراء الأرجوزة وقالوا: شعر البوادي، وإنما أهل الحاضرة ينظمون القصائد." },
+            { type: "text", content: "دأَبَ أهل العلم على <b>نظم العلوم</b> حتى يسهل على الطلبة حفظها: كنظم ابن عاشر (المرشد المعين)، وألفية العراقي، وألفية السيوطي وغيرها." }
+          ]
+        },
+        {
+          heading: "تسمية الأرجوزة المئية",
+          items: [
+            { type: "def", content: "اسمها الكامل: <b>«الأرجوزة المئية بذكر حال أشرف البرية»</b> — أُخذ من خاتمة النظم حيث قال الناظم: «وتمّت الأرجوزة المئية بذكر حال أشرف البرية»." },
+            { type: "benefit", content: "نظمها القاضي ابن أبي العز لكي <b>يبسّط ويُيسّر السيرة النبوية</b> في تصوّرها العام لكل مبتدئ في دراسة السيرة." }
+          ]
+        },
+        {
+          heading: "مراحل دراسة السيرة النبوية بالتدرج",
+          items: [
+            { type: "text", content: "ذكر الدكتور <b>وحيد بن عبد السلام بالي</b> حفظه الله (من علماء مصر) في مقدمة كتابه <b>«الخلاصة البهية بترتيب أحداث السيرة النبوية»</b> أربع مراحل للتدرج في دراسة السيرة:" },
+            { type: "table", headers: ["المرحلة", "الهدف", "الكتب المقترحة"], rows: [["① التأسيس", "إشارات تلغرافية وأحداث مرقّمة بإيجاز", "الأرجوزة المئية · الخلاصة البهية"], ["② التصوّر", "بناء تصوّر عام مع بعض التفاصيل", "الرحيق المختوم — صفي الرحمن المباركفوري (حاز الجائزة العالمية)"], ["③ الدراسة والتحليل", "استنباط الفوائد والدروس والعبر", "هذا الحبيب يا محب — الجزائري · السيرة النبوية — الصلابي · السيرة في ضوء المصادر الأصلية — العمري"], ["④ التخصص", "تسليط الأضواء على جانب معيّن", "المغازي — الواقدي · سيرة ابن هشام · التاريخ — الطبري · عيون الأثر — ابن سيد الناس · الألفية (العراقي أو السيوطي)"]] }
+          ]
+        },
+        {
+          heading: "إضاءة: الحصة القادمة",
+          items: [
+            { type: "text", content: "تُفتتح الحصة القادمة إن شاء الله مباشرة مع <b>الأبيات الخمسة الأولى</b> من الأرجوزة المئية بذكر حال أشرف البرية ﷺ." }
+          ]
+        }
+      ],
+      quiz: [
+        { q: "ما اسم ناظم الأرجوزة المئية؟", opts: ["ابن كثير الدمشقي", "القاضي علي بن أبي العز الحنفي", "الإمام الطحاوي", "صفي الرحمن المباركفوري"], c: 1, exp: "ناظم الأرجوزة المئية هو القاضي علي بن علي بن محمد بن أبي العز الحنفي الدمشقي رحمه الله." },
+        { q: "مَن كان من أبرز شيوخ القاضي ابن أبي العز؟", opts: ["الإمام أحمد بن حنبل", "الإمام النووي", "الحافظ ابن كثير", "الإمام الذهبي"], c: 2, exp: "من أبرز شيوخه الحافظ المفسّر العلّامة ابن كثير رحمه الله، وتأثر به في مصطلحاته واختياراته." },
+        { q: "ما أشهر مؤلفات القاضي ابن أبي العز الحنفي؟", opts: ["تفسير القرآن العظيم", "شرح العقيدة الطحاوية", "البداية والنهاية", "صحيح مسلم بشرح النووي"], c: 1, exp: "من أشهر ما عُرف به شرحه للعقيدة الطحاوية، وهو من أشهر شروحها." },
+        { q: "على أيّ بحر شعري تُنظَم الأرجوزة؟", opts: ["بحر الطويل", "بحر الكامل", "بحر الرَّجَز", "بحر البسيط"], c: 2, exp: "الأرجوزة تُنظم على بحر الرَّجَز وتفعيلته: مُسْتَفْعِلُنْ مُسْتَفْعِلُنْ مُسْتَفْعِلُنْ." },
+        { q: "ما الفرق الأساسي بين الأرجوزة والقصيدة كما ذكر الشيخ؟", opts: ["لا فرق بينهما", "الأرجوزة على بحر الرجز وأقصر، والقصيدة بحورها أكبر وأشمل", "القصيدة أقدم تاريخيًّا", "الأرجوزة لا تُحفَظ"], c: 1, exp: "الأرجوزة على بحر الرجز وأقصر عمومًا، بينما القصيدة بحورها أكبر وأشمل ولها وحدة موضوع ومقدمة متكاملة." },
+        { q: "لماذا نظم العلماء العلوم على شكل أراجيز ومنظومات؟", opts: ["لإظهار براعتهم الشعرية", "لتسهيل الحفظ على الطلبة", "لأن النثر محرّم", "لأن الخلفاء أمروهم بذلك"], c: 1, exp: "دأب أهل العلم على نظم العلوم حتى يسهل على الطلبة حفظها، لأن الموسيقية والسلاسة في النظم تُيسّر الحفظ." },
+        { q: "من أين أُخذ اسم «الأرجوزة المئية»؟", opts: ["من مقدمة النظم", "من خاتمة النظم حيث قال الناظم: وتمت الأرجوزة المئية", "من اسم المؤلف", "من عدد أبياتها فقط"], c: 1, exp: "أُخذ اسمها من خاتمة النظم حيث قال: «وتمّت الأرجوزة المئية بذكر حال أشرف البرية»." },
+        { q: "ما المرحلة الأولى في دراسة السيرة النبوية بحسب الدكتور وحيد بالي؟", opts: ["مرحلة التخصص", "مرحلة التأسيس", "مرحلة الدراسة والتحليل", "مرحلة التصور"], c: 1, exp: "المرحلة الأولى هي مرحلة التأسيس، ومن كتبها الأرجوزة المئية والخلاصة البهية." },
+        { q: "ما الكتاب الذي حاز الجائزة العالمية للتأليف في السيرة النبوية؟", opts: ["البداية والنهاية", "الرحيق المختوم", "هذا الحبيب يا محب", "عيون الأثر"], c: 1, exp: "كتاب «الرحيق المختوم» لصفي الرحمن المباركفوري حاز الجائزة العالمية للتأليف في السيرة النبوية." },
+        { q: "كم عاش الإمام النووي رحمه الله؟", opts: ["61 سنة هجرية", "45 سنة هجرية", "70 سنة هجرية", "55 سنة هجرية"], c: 1, exp: "توفي الإمام النووي وعمره 45 سنة هجرية فقط (≈ 41-42 ميلادية)، ومع ذلك خلّف علمًا زاخرًا بلغ الآفاق." },
+        { q: "ما سبب محنة القاضي ابن أبي العز الحنفي؟", opts: ["مخالفته لعقيدة أهل السنة", "حسد أقرانه لاعتراضاته الفقهية فألّبوا عليه السلطان", "فراره من القضاء", "رفضه تأليف الكتب"], c: 1, exp: "كانت له اعتراضات فقهية لم تُعجب بعض أقرانه من أهل الحسد، فألّبوا عليه السلطان فسُجن وعُزل." },
+        { q: "ما المراحل الأربع لدراسة السيرة النبوية بالترتيب؟", opts: ["التصور، التأسيس، التخصص، التحليل", "التأسيس، التصور، الدراسة والتحليل، التخصص", "التخصص، التحليل، التأسيس، التصور", "الدراسة، الحفظ، الفهم، التطبيق"], c: 1, exp: "المراحل الأربع بالترتيب: التأسيس → التصور → الدراسة والتحليل → التخصص." }
+      ],
+      revision: [
+        { q: "عرّف بناظم الأرجوزة المئية.", a: "القاضي علي بن علي بن محمد بن أبي العز الحنفي الدمشقي (731-792هـ). من أبرز شيوخه ابن كثير. أشهر مؤلفاته شرح العقيدة الطحاوية. وَلِي القضاء وسُجن بسبب حسد أقرانه ثم أُعيد." },
+        { q: "كيف تأثر ابن أبي العز بشيخه ابن كثير؟", a: "في المصطلحات: استعمل لفظة «الفصول» كما فعل ابن كثير. في الاختيارات التاريخية: مال لقوله بأن الحج فُرض سنة 6هـ (بينما غيره يرى سنة 9هـ)." },
+        { q: "اذكر أسباب محن العلماء الثلاثة مع أمثلة.", a: "① مخالفون في العقيدة يؤلّبون السلطان (الإمام أحمد). ② عدم رضوخ العالم لأهواء الحاكم (الإمام مالك). ③ حسد الأقران (الإمام البخاري مع الذهلي)." },
+        { q: "ما الفرق بين الأرجوزة والقصيدة؟", a: "الأرجوزة: على بحر الرجز (مستفعلن×3)، قصيرة، كل مصراع بيت، أقدم أشكال الشعر. القصيدة: بحورها أكبر، روي واحد وقافية واحدة، لها مقدمة وبنية متكاملة." },
+        { q: "ما الاسم الكامل للأرجوزة ومن أين أُخذ؟", a: "الأرجوزة المئية بذكر حال أشرف البرية. أُخذ من خاتمتها: «وتمّت الأرجوزة المئية بذكر حال أشرف البرية»." },
+        { q: "ما معنى «عَرض العمر» كما ذكر فريد الأنصاري؟", a: "ميزة الأعمار ليست بطولها (عدد السنين) بل بعَرضها (ما يُنتَج فيها). كالإمام النووي: توفي عن 45 سنة هجرية لكنه خلّف علمًا زاخرًا بلغ الآفاق." },
+        { q: "اذكر المراحل الأربع لدراسة السيرة وكتابًا لكل مرحلة.", a: "① التأسيس: الأرجوزة المئية، الخلاصة البهية. ② التصور: الرحيق المختوم. ③ الدراسة والتحليل: هذا الحبيب يا محب، السيرة للصلابي. ④ التخصص: المغازي للواقدي، سيرة ابن هشام." },
+        { q: "لماذا نظم العلماء المتون الشعرية في العلوم؟", a: "لتسهيل الحفظ على الطلبة، لأن التناوب بين الحركة والسكون في النظم يعطي موسيقية وسلاسة تيسّر الحفظ والاستذكار." },
+        { q: "ما قصة محنة الإمام مالك باختصار؟", a: "لم يرضخ لأهواء والي المدينة فقال: «من كان يعرفني فقد عرفني ومن لم يعرفني فأنا مالك بن أنس الأصبحي، وأفتي وأقول: طلاق المُكرَه لا يقع»." },
+        { q: "ما المقصود بمرحلة التخصص في السيرة؟ وبماذا يُنصح؟", a: "تسليط الأضواء على جانب معيّن من السيرة (كعلاقته ﷺ بأزواجه). يُنصح بالبدء بكتب المتقدمين ثم المتأخرين ثم المعاصرين." },
+        { q: "مَن صاحب كتاب الرحيق المختوم وما ميزته؟", a: "صفي الرحمن المباركفوري — عالم هندي حاز الجائزة العالمية للتأليف في السيرة. يتميز بأسلوب عذب ومعلومات منسجمة وصياغة أحداث مشوّقة." },
+        { q: "ماذا سيُدرَس في الحصة القادمة؟", a: "الأبيات الخمسة الأولى من الأرجوزة المئية بذكر حال أشرف البرية ﷺ." }
+      ],
+      maps: [],
+      mindmap: {
+        center: "صاحب الأرجوزة ومراحل دراسة السيرة",
+        branches: [
+          { label: "ترجمة الناظم", items: [
+            "<b>القاضي ابن أبي العزّ الحنفي</b> (731–792هـ)",
+            "من شيوخه: <b>ابن كثير</b>",
+            "أشهر مؤلفاته: <b>شرح العقيدة الطحاوية</b>",
+            "سُجن بسبب حسد الأقران ثم أُعيد"
+          ]},
+          { label: "أسباب محن العلماء", items: [
+            "① مخالفون في العقيدة يُؤلّبون السلطان (أحمد)",
+            "② عدم رضوخ العالم لأهواء الحاكم (مالك)",
+            "③ حسد الأقران (البخاري مع الذُّهلي)"
+          ]},
+          { label: "عَرض العمر لا طوله", items: [
+            "ميزة الأعمار <b>بعَرضها</b> لا بطولها",
+            "النووي: توفي عن <b>45 سنة</b> وخلّف علمًا زاخرًا",
+            "﴿وجنةٍ عرضُها السماوات والأرض﴾"
+          ]},
+          { label: "الأرجوزة والقصيدة", items: [
+            "الأرجوزة: بحر <b>الرَّجَز</b>، قصيرة، أقدم أشكال الشعر",
+            "القصيدة: بحور أكبر، لها مقدمة وبنية متكاملة",
+            "الاسم: <b>الأرجوزة المئية بذكر حال أشرف البرية</b>"
+          ]},
+          { label: "مراحل دراسة السيرة", items: [
+            "① <b>التأسيس:</b> الأرجوزة المئية، الخلاصة البهية",
+            "② <b>التصوّر:</b> الرحيق المختوم",
+            "③ <b>الدراسة والتحليل:</b> هذا الحبيب، السيرة للصلابي",
+            "④ <b>التخصص:</b> المغازي للواقدي، سيرة ابن هشام"
+          ]}
+        ]
+      }
+    }
+  ],
+
+  tajwid: [
+    {
+      num: 1,
+      title: "مدخل إلى علم التجويد — الحدّ والموضوع والثمرة",
+      summary: [
+        {
+          heading: "تمهيد: لا تحرم نفسك من تعلّم التجويد",
+          items: [
+            { type: "warning", content: "اعتقاد خاطئ يمنع كثيرًا من الطلبة من تعلم التجويد: <b>ربط تعلّمه بحُسن الصوت</b>. يظنون أنه لا سبيل لطلب هذا العلم إلا بامتلاك مؤهلات صوتية أدائية. والحقيقة أن هذا العلم والقرآن لكل من رغب في القراءة الصحيحة، وليس لفئة خاصة فقط." },
+            { type: "hadith", content: "قال ﷺ: «زيِّنوا القرآن بأصواتكم فإنّ الصوت الحسن يزيد القرآن حسنًا وجمالًا»" },
+            { type: "poetry", content: "قال الإمام الشاطبي: «وتَردادُهُ يَزدادُ فيه تَجمُّلا»\nأي بكثرة القراءة يزداد الصوت نداوةً وحسنًا وجمالًا." },
+            { type: "benefit", content: "<b>أثر القرآن في الحواسّ:</b> القلب يتنوّر ويتطهّر ويزكو ويتقرّب إلى الله، والسمع ينفر من لهو الحديث والأغاني ويأنس بسماع كلام الله، والبصر يُعرض عن المعاصي فيتنوّر كذلك البصيرة، والصوت كذلك يتطهّر ويتنوّر ويتزيّن بكثرة القراءة والتعلّم والعرض على المشايخ." }
+          ]
+        },
+        {
+          heading: "١. الحَدّ — تعريف التجويد",
+          items: [
+            { type: "def", content: "<b>التجويد لغةً:</b> التحسين والإتقان. تقول: جوَّد الصانعُ صنعتَه أي بلغ فيها غاية الحسن والإتقان." },
+            { type: "def", content: "<b>التجويد اصطلاحًا:</b> إعطاءُ لكلّ حرفٍ حقَّه ومُستحقَّه من المخارج والصفات والمدود والغنّة وغيرها من الأحكام." },
+            { type: "text", content: "<b>بنية القرآن:</b> ١١٤ سورة ← تتألف من مقاطع تسمى <b>الآيات</b> ← تتألف من <b>الكلمات</b> ← تتألف من <b>الحروف</b>. فالحرف هو <b>أصغر لبنة</b> في صرح هذا القرآن العظيم، وعلم التجويد يُعنى بكيفية أداء هذا الحرف سواء على سبيل الإفراد أو على سبيل التركيب." },
+            { type: "benefit", content: "القرآن هو <b>الكتاب الوحيد</b> في هذه الدنيا المتعبَّد بقراءة حروفه. الحديث النبوي تُؤجر على فهمه والعمل به، لكن القرآن خصّه الله تعالى بأنّ مجرد قراءة حروفه فيها أجر عظيم." },
+            { type: "hadith", content: "عن عبد الله بن مسعود رضي الله عنه قال: قال رسول الله ﷺ: «من قرأ حرفًا من كتاب الله فله به حسنة والحسنة بعشر أمثالها، لا أقول ألم حرف، ولكن ألفٌ حرف ولامٌ حرف وميمٌ حرف»" }
+          ]
+        },
+        {
+          heading: "٢. الموضوع",
+          items: [
+            { type: "def", content: "<b>موضوع علم التجويد:</b> الكلمات القرآنية من حيث أحكام حروفها وإجادة التلفّظ بها." }
+          ]
+        },
+        {
+          heading: "٣. الثمرة — فضائل أهل القرآن",
+          items: [
+            { type: "text", content: "ثمرات تعلّم التجويد والقرآن دنيوية وأخروية كثيرة لا تُحصى." },
+            { type: "poetry", content: "قال ابن بَرّي:\n«فاعلمْ أنّ علمَ القرآنِ أجملُ ما تحلّى به الإنسانُ\n... وقد أتت في فضله أخبارٌ ليست تفي بحملها أسفارُ»\nالسِّفْر: المُجلَّد الضخم — أي الكتب الضخمة لا تفي بحمل ما ورد في فضائل القرآن." },
+            { type: "hadith", content: "عن أنس بن مالك رضي الله عنه قال: قال رسول الله ﷺ: «إنّ لله أهلِين من الناس» قالوا: يا رسول الله مَن هم؟ قال: «هم أهل القرآن، أهلُ الله وخاصّتُه» — أي أولياء الله الذين اختصّهم بمحبته واصطفاهم وانتخبهم من سائر الناس." },
+            { type: "hadith", content: "عن عثمان رضي الله عنه قال: قال رسول الله ﷺ: «خيركم من تعلّم القرآن وعلّمه» — وفي رواية: «أفضلكم». خيرية مطلقة ليس بعدها خيرية." },
+            { type: "benefit", content: "<b>عبد الرحمن السلمي</b> — تابعي جليل ثقة في الحديث — لمّا سمع هذا الحديث قال: «أجلسني هذا الحديث في مسجدكم هذا» أي مسجد الكوفة، فتفرّغ لتعليم الناس القرآن <b>٤٠ سنة</b>. وقد قرأ عليه الحسن والحسين رضي الله عنهما." },
+            { type: "text", content: "بدأ ﷺ بالتعلّم وختم بالتعليم: فمسيرة القارئ شطرها الأول يصرفه إلى تعلّم هذا العلم وضبط أصوله، والشطر الثاني يصرفه إلى تعليم الناس." }
+          ]
+        },
+        {
+          heading: "٣. الثمرة — منزلة صاحب القرآن يوم القيامة",
+          items: [
+            { type: "hadith", content: "قال ﷺ: «يُقال لصاحب القرآن: اقرأ وارتقِ ورتّل كما كنت ترتّل في الدنيا، فإنّ منزلتك عند آخر آية تقرؤها» — وهذا يتعلق بالحافظ خاصة؛ فمنزلته في الجنة عند آخر آية يقرؤها." },
+            { type: "benefit", content: "استنبط الإمام <b>ابن تيمية</b> استنباطًا عجيبًا: منازل أهل الجنة بعدد آي القرآن بنصّ هذا الحديث — بقدر ما تحفظ بقدر ما ترتقي في منازل الجنة." },
+            { type: "hadith", content: "قال ﷺ: «الماهرُ بالقرآن مع السَّفَرة الكرام البَرَرة» — أي الملائكة الكتبة — ثم قال ﷺ: «والذي يقرأ القرآن ويتتعتع فيه وهو عليه شاقٌّ فله أجران»" },
+            { type: "def", content: "<b>التتعتع صورتان:</b> ① في القراءة: حين يتعلّم أحكام الإدغام والإخفاء والإظهار والمد فيجد صعوبة لأن لسانه لم يتعوّد بعد. ② في الحفظ: حين يستظهر على شيخه فيستبدل كلمة بكلمة وينسى الآية. والأجران: <b>أجر التلاوة وأجر المشقة</b>." },
+            { type: "hadith", content: "قال ﷺ: «يُؤتى صاحبُ القرآن يوم القيامة ويُوضع على رأسه <b>تاج الوَقار</b> ويُكسى والداه حلّتين لا يقوم لهما أهل الدنيا، فيقولان: بمَ كُسينا هذه؟ فيُقال: بأخذِ ولدِكما القرآن»" },
+            { type: "poetry", content: "قال الإمام الشاطبي في حِرز الأماني:\n«فيا أيّها القارئُ به مُتمسّكًا ● مُجِلًّا له في كل حال مُبجِّلا\nهنيئًا مريئًا والداك عليهما ● ملابسُ أنوارٍ من التاج والحُلى\nفما ظنّكم بالنَّجْل عند جزائه ● أولئك أهلُ الله والصَّفوةُ المَلا»" },
+            { type: "benefit", content: "أعظم هدية تعطيها لوالديك هي أن تحفظ القرآن الكريم." }
+          ]
+        },
+        {
+          heading: "ما يأتي في الحصة المقبلة",
+          items: [
+            { type: "text", content: "بقيت ثمرة من أهم الثمرات تتعلق بصَون اللسان عن <b>اللحن الجلي والخفي</b> في القرآن. فما هو اللحن وما الفرق بين الجلي والخفي؟ هذا ما سنفاتشه إن شاء الله تعالى في الحصة المقبلة." }
+          ]
+        }
+      ],
+      quiz: [
+        { q: "ما التجويد لغةً؟", opts: ["التحسين والإتقان", "التكرار والمراجعة", "الحفظ والتثبيت", "القراءة السريعة"], c: 0, exp: "التجويد لغةً هو التحسين والإتقان. تقول: جوّد الصانع صنعته أي بلغ فيها غاية الحسن والإتقان." },
+        { q: "ما موضوع علم التجويد؟", opts: ["الأحاديث النبوية", "تفسير القرآن", "الكلمات القرآنية من حيث أحكام حروفها", "أحكام الصلاة"], c: 2, exp: "موضوع علم التجويد هو الكلمات القرآنية من حيث أحكام حروفها وإجادة التلفظ بها." },
+        { q: "ما التجويد اصطلاحًا عند أئمة علم القراءة؟", opts: ["تحسين الصوت بالقرآن", "حفظ القرآن كاملًا عن ظهر قلب", "تفسير آيات القرآن الكريم", "إعطاء لكل حرف حقه ومستحقه من المخارج والصفات"], c: 3, exp: "التجويد اصطلاحًا: إعطاء لكل حرف حقه ومستحقه من المخارج والصفات والمدود والغنة وغيرها." },
+        { q: "ما أصغر لبنة في صرح القرآن الكريم؟", opts: ["السورة", "الآية", "الكلمة", "الحرف"], c: 3, exp: "الحرف هو أصغر لبنة في صرح القرآن: ١١٤ سورة ← آيات ← كلمات ← حروف." },
+        { q: "من راوي حديث «من قرأ حرفًا من كتاب الله فله به حسنة»؟", opts: ["أنس بن مالك", "عثمان بن عفان", "عبد الله بن مسعود", "أبو هريرة"], c: 2, exp: "هو عن عبد الله بن مسعود رضي الله عنه." },
+        { q: "ما الكتاب الوحيد المتعبَّد بقراءة حروفه؟", opts: ["القرآن الكريم", "الحديث النبوي", "كتب الفقه", "كتب التفسير"], c: 0, exp: "القرآن هو الكتاب الوحيد في الدنيا المتعبد بقراءة حروفه. الحديث تؤجر على فهمه والعمل به لكن القرآن خُصّ بهذه الخصيصة." },
+        { q: "من روى حديث «خيركم من تعلّم القرآن وعلّمه»؟", opts: ["أنس بن مالك", "عثمان بن عفان", "عبد الله بن عمر", "أبو بكر الصديق"], c: 1, exp: "رواه عثمان رضي الله عنه عن النبي ﷺ." },
+        { q: "كم سنة تفرّغ عبد الرحمن السلمي لتعليم القرآن في مسجد الكوفة؟", opts: ["١٠ سنوات", "٢٠ سنة", "٣٠ سنة", "٤٠ سنة"], c: 3, exp: "تفرّغ ٤٠ سنة لتعليم الناس القرآن في مسجد الكوفة بعد سماعه حديث «خيركم من تعلم القرآن وعلمه»." },
+        { q: "ما معنى «أهلين» في حديث «إنّ لله أهلين من الناس»؟", opts: ["أولياء الله الذين اختصهم بمحبته", "العلماء في الفقه والحديث", "الأنبياء والرسل", "حفظة الحديث النبوي"], c: 0, exp: "أهلين أي أولياء الله الذين اختصهم الله بمحبته واصطفاهم وانتخبهم من سائر الناس." },
+        { q: "ما الأجران في حديث مَن يقرأ القرآن ويتتعتع فيه؟", opts: ["أجر الحفظ وأجر التعليم", "أجر التدبر وأجر الخشوع", "أجر التلاوة وأجر المشقة", "أجر الصبر وأجر الإخلاص"], c: 2, exp: "قال أهل العلم: أجر التلاوة وأجر المشقة." },
+        { q: "ماذا يوضع على رأس صاحب القرآن يوم القيامة؟", opts: ["إكليل من ذهب", "تاج الوقار", "عمامة من نور", "طوق من فضة"], c: 1, exp: "يُؤتى صاحب القرآن يوم القيامة ويوضع على رأسه تاج الوقار." },
+        { q: "من صاحب قول «وتردادُه يزدادُ فيه تجمّلا»؟", opts: ["ابن بَرّي", "ابن الجزري", "ابن تيمية", "الإمام الشاطبي"], c: 3, exp: "الإمام الشاطبي رحمه الله — يعني أن كثرة قراءة القرآن تزيد الصوت نداوة وحسنًا وجمالًا." }
+      ],
+      revision: [
+        { q: "ما التجويد لغةً واصطلاحًا؟", a: "لغةً: التحسين والإتقان. اصطلاحًا: إعطاء لكل حرف حقه ومستحقه من المخارج والصفات والمدود والغنة وغيرها من الأحكام." },
+        { q: "ما موضوع علم التجويد؟", a: "الكلمات القرآنية من حيث أحكام حروفها وإجادة التلفظ بها." },
+        { q: "كيف تتكوّن بنية القرآن من الأكبر إلى الأصغر؟", a: "١١٤ سورة ← آيات ← كلمات ← حروف. الحرف هو أصغر لبنة في صرح القرآن العظيم." },
+        { q: "ما الذي يميّز القرآن عن سائر الكتب من حيث الأجر؟", a: "القرآن هو الكتاب الوحيد المتعبد بقراءة حروفه: من قرأ حرفًا فله به حسنة والحسنة بعشر أمثالها. أما الحديث فتؤجر على فهمه والعمل به." },
+        { q: "اذكر حديث أهل القرآن (حديث أنس).", a: "قال ﷺ: «إنّ لله أهلين من الناس» قالوا: يا رسول الله من هم؟ قال: «هم أهل القرآن، أهل الله وخاصته» — أي أولياء الله الذين اختصهم بمحبته." },
+        { q: "اذكر حديث خيرية تعلّم القرآن ومن تفرّغ بسببه.", a: "قال ﷺ: «خيركم من تعلم القرآن وعلمه». تفرّغ عبد الرحمن السلمي — تابعي ثقة — بسبب هذا الحديث ٤٠ سنة لتعليم القرآن في مسجد الكوفة، وقرأ عليه الحسن والحسين." },
+        { q: "ما معنى حديث «يُقال لصاحب القرآن اقرأ وارتقِ»؟", a: "يقال لصاحب القرآن (الحافظ): اقرأ وارتقِ ورتل كما كنت ترتل في الدنيا فإن منزلتك عند آخر آية تقرأها. استنبط ابن تيمية أن منازل الجنة بعدد آي القرآن." },
+        { q: "ما صورتا التتعتع وما أجر صاحبه؟", a: "① في القراءة: حين يتعلم الأحكام ولسانه لم يتعود. ② في الحفظ: حين يستظهر فينسى ويستبدل. والأجران: أجر التلاوة وأجر المشقة." },
+        { q: "ما جزاء صاحب القرآن ووالديه يوم القيامة؟", a: "يوضع على رأسه تاج الوقار، ويُكسى والداه حلتين لا يقوم لهما أهل الدنيا. فيقولان: بم كسينا هذه؟ فيقال: بأخذ ولدكما القرآن." },
+        { q: "ماذا قال الشاطبي عن فضل القارئ ووالديه؟", a: "«فيا أيها القارئ به متمسكًا، مجلًّا له في كل حال مبجّلا، هنيئًا مريئًا والداك عليهما ملابس أنوار من التاج والحلى، فما ظنكم بالنجل عند جزائه»" },
+        { q: "ما علاقة حسن الصوت بتعلّم التجويد؟", a: "لا علاقة شرطية بينهما. حسن الصوت يأتي مع الدربة وكثرة القراءة كما قال الشاطبي: «وترداده يزداد فيه تجملا». التجويد لكل من رغب في القراءة الصحيحة وليس حكرًا على أصحاب الأصوات الحسنة." },
+        { q: "ما الذي سيأتي في الحصة المقبلة؟", a: "بقيت ثمرة مهمة: صون اللسان عن اللحن الجلي والخفي في القرآن — وسيأتي بيان ماهية اللحن والفرق بينهما." }
+      ],
+      maps: [],
+      mindmap: {
+        center: "مدخل إلى علم التجويد",
+        branches: [
+          { label: "الحَدّ — التعريف", items: [
+            "<b>لغةً:</b> التحسين والإتقان",
+            "<b>اصطلاحًا:</b> إعطاء كل حرف حقه ومستحقه",
+            "بنية القرآن: سور ← آيات ← كلمات ← <b>حروف</b>",
+            "القرآن: الكتاب الوحيد <b>المتعبَّد بقراءة حروفه</b>"
+          ]},
+          { label: "الموضوع", items: [
+            "<b>الكلمات القرآنية</b> من حيث أحكام حروفها",
+            "إجادة التلفّظ بها إفرادًا وتركيبًا"
+          ]},
+          { label: "ثمرات تعلّم القرآن", items: [
+            "أهل القرآن <b>أهل الله وخاصته</b>",
+            "«<b>خيركم</b> من تعلّم القرآن وعلّمه»",
+            "عبد الرحمن السلمي تفرّغ <b>40 سنة</b> للتعليم"
+          ]},
+          { label: "منزلة صاحب القرآن", items: [
+            "«اقرأ وارتقِ» — منازل الجنة بعدد آي القرآن (ابن تيمية)",
+            "الماهر مع <b>السَّفَرة الكرام البَرَرة</b>",
+            "المتتعتع له <b>أجران:</b> التلاوة والمشقة",
+            "<b>تاج الوقار</b> يوم القيامة ووالداه يُكسيان حُلّتين"
+          ]},
+          { label: "لا تحرم نفسك", items: [
+            "ربط التجويد بحُسن الصوت <b>اعتقاد خاطئ</b>",
+            "«زيّنوا القرآن بأصواتكم»",
+            "أثر القرآن: <b>القلب والسمع والبصر والصوت</b>"
+          ]}
+        ]
+      }
+    }
+  ],
+tawhid: [
+    {
+      num: 1,
+      title: "المبادئ العشرة لعلم التوحيد والعقيدة (الجزء الأول)",
+      summary: [
+        {
+          heading: "تمهيد: لماذا المبادئ العشرة؟",
+          items: [
+            { type: "text", content: "قبل الشروع في أي علم من العلوم، لا بد لدارسه من أن يأخذ فكرة عنه ويتصوره: ما هو هذا العلم؟ ما موضوعه؟ كيف نشأ؟ ما فائدته وثمراته؟ وهذا ليس خاصًّا بالعلوم الشرعية بل يشمل حتى العلوم الكونية والدنيوية." },
+            { type: "text", content: "تنبَّه السابقون من العلماء المسلمين لهذا الأمر، فوضعوا ما يُسمى <b>بالمبادئ العشرة</b>. ممن أشار إليها الإمام <b>المقّري</b> رحمه الله، ونظمها <b>محمد بن علي الصبّان الشافعي</b> رحمه الله في ثلاثة أبيات." },
+            { type: "poetry", content: "إنّ مبادِئَ كلِّ فنٍّ عَشَرَهْ ● الحَدُّ والموضوعُ ثُمَّ الثَّمَرَهْ\nونِسبةٌ وفَضلُهُ والوَاضِعْ ● والاسمُ الاستِمدادُ حُكمُ الشارِعْ\nمَسائلٌ — والبعضُ بالبعضِ اكتَفَى ● ومَن دَرَى الجميعَ حَازَ الشَّرَفَا" },
+            { type: "benefit", content: "المقصود بـ«الفنّ» عند السابقين هو <b>العلم</b> (نوع من العلوم)، وليس ما يُعرف اليوم بالفنون كالرسم والنحت. فقوله «إنّ مبادئ كلّ فنّ عشرة» يعني: إنّ مبادئ كلّ علمٍ عشرة." },
+            { type: "benefit", content: "هذه المبادئ العشرة تُطبَّق على <b>أي علم</b> من العلوم — شرعيًّا كان أو كونيًّا — كالطب وغيره. ومن تعلّم جميع هذه المبادئ في أي علم يدرسه نال الشرف والسبق." }
+          ]
+        },
+        {
+          heading: "المبدأ الأول: الحَدّ (التعريف)",
+          items: [
+            { type: "def", content: "<b>الحدّ لغةً:</b> التعريف. وعند المناطقة: وضع حدود للمفهوم تجعله مستقلًّا عن غيره، بحيث يكون التعريف <b>جامعًا مانعًا</b>: يجمع ما ينبغي أن يكون فيه ويُخرج ما ليس منه." },
+            { type: "def", content: "<b>التعريف الأول:</b> هو العلم الذي يُتوصّل به إلى الإيمان بوحدانية الله ومعرفة مقتضياتها." },
+            { type: "def", content: "<b>التعريف الثاني (على غرار تعريف الفقه):</b> هو العلم بالأحكام الشرعية الاعتقادية المُستنبَط من أدلّتها الصحيحة — سواء كانت نقلية (من الكتاب والسنة) أو عقلية." },
+            { type: "benefit", content: "<b>الفرق بين تعريف الفقه وتعريف التوحيد:</b><br>• الفقه: العلم بالأحكام الشرعية <b>العملية</b> المُستنبَط من أدلّتها <b>التفصيلية</b> (أحكام الصلاة، الزكاة، البيوع...)<br>• التوحيد: العلم بالأحكام الشرعية <b>الاعتقادية</b> المُستنبَط من أدلّتها <b>الصحيحة</b> (ما يجب الإيمان به، ما يُثبت لله وما يُنفى عنه)" },
+            { type: "benefit", content: "كان علم التوحيد يُسمى قديمًا <b>«الفقه الأكبر»</b>، والفقه المعروف اليوم كان يُسمى <b>«الفقه الأصغر»</b>. ثم اختفت تسمية الفقه الأكبر وصار لفظ «الفقه» يُطلق على الفقه الأصغر فقط." }
+          ]
+        },
+        {
+          heading: "المبدأ الثاني: الموضوع",
+          items: [
+            { type: "text", content: "الموضوع هو ما يدور حوله العلم ويتناوله بالدراسة والبحث. ولكلّ علم موضوعه الخاص:" },
+            { type: "table", headers: ["العلم", "موضوعه"], rows: [
+              ["الطب", "جسد الإنسان من جهة الصحة والمرض"],
+              ["النحو", "أواخر الكلمات العربية"],
+              ["التجويد", "الكلمات القرآنية"],
+              ["التوحيد والعقيدة", "الله سبحانه وتعالى وحقوقه"]
+            ]},
+            { type: "def", content: "<b>موضوع علم التوحيد:</b> الله سبحانه وتعالى <b>وحقوقه</b> — لا من جهة تأمُّل الذات الإلهية (فلا سبيل إلى ذلك إطلاقًا)، بل من جهة <b>توحيده ومعرفة حقوقه</b>: ما ينبغي إثباته له وما ينبغي نفيُه عنه، وما يترتّب على ذلك." },
+            { type: "hadith", content: "عن معاذ رضي الله عنه أن النبي ﷺ سأله: <b>«ما حقّ الله على العباد؟»</b> قال: الله ورسوله أعلم. قال: <b>«حقّه أن يُوحّدوه ولا يُشركوا به شيئًا»</b>. ثم سأله: <b>«ما حقّ العباد على الله؟»</b> قال: <b>«حقّهم عليه ألّا يُعذّبهم»</b> — أي أن يُدخلهم الجنة." }
+          ]
+        },
+        {
+          heading: "المبدأ الثالث: الثمرة",
+          items: [
+            { type: "text", content: "الثمرة هي الفوائد التي يجنيها الدارس من دراسة هذا العلم. والحديث عنها في غاية الأهمية؛ لأنّ من لا يعرف ما سيجنيه قد يتوقّف في منتصف الطريق — كمن يُقال له «احفر هنا» دون أن يُخبَر أنّ تحته كنزًا." },
+            { type: "table", headers: ["الثمرة", "بيانها"], rows: [
+              ["معرفة التوحيد وفهم حقيقته", "ما هو التوحيد؟ كيف يُحقَّق؟ كيف يُحافَظ عليه؟ — فالمولود يولد على الفطرة لكنه يحتاج إلى العلم"],
+              ["معرفة الله سبحانه وتعالى", "بدراسة توحيد الأسماء والصفات تتعرّف على الله من خلال ما عرّف به نفسه في الكتاب والسنة"],
+              ["تصفية الاعتقاد", "التخلّص من الشوائب والخرافات التي قد توجد في بعض البيئات وإن كانت مسلمة"],
+              ["تحقيق الإخلاص", "تعلُّم أنّ الأعمال لله وحده، وتجنُّب الرياء الذي هو الشرك الخفي"],
+              ["كشف الشبهات", "في عصر كثُرت فيه الشبهات والتيارات المناقضة للعقيدة، ترسيخ العقيدة يُحصّن المسلم"],
+              ["البعد عن الشرك", "معرفة أقسامه (الأكبر والأصغر) وأنواعه (في الربوبية والألوهية والأسماء والصفات)"],
+              ["التزكية", "كلّما تعلّمتَ التوحيد كان قلبك أقرب إلى الله وأزكى وأطهر"]
+            ]},
+            { type: "quran", content: "﴿ فَاعْلَمْ أَنَّهُ لَا إِلَٰهَ إِلَّا اللَّهُ وَاسْتَغْفِرْ لِذَنبِكَ ﴾ — «فاعلم» فعل أمر يُفيد الوجوب، فدلّ على وجوب تعلّم التوحيد." }
+          ]
+        },
+        {
+          heading: "المبدأ الرابع: النسبة",
+          items: [
+            { type: "text", content: "النسبة: أين نضع هذا العلم من بين سائر العلوم؟ هل ينتسب إلى علم آخر؟" },
+            { type: "def", content: "علم التوحيد <b>لا يُنسَب لأيّ علم من العلوم</b>، بل هو <b>أصل العلوم</b> وكلّ العلوم الشرعية تُنسب إليه؛ لأنها إمّا تفرّعت عنه أو هي خادمة له. فهو أول علم ظهر عند المسلمين." },
+            { type: "text", content: "فعلم الفقه (عبادة الله) يصبّ في بحر التوحيد، وعلوم العربية (النحو والصرف والبلاغة) جاءت لفهم الكتاب والسنة فهمًا سليمًا — وكلّها في آخر المطاف توصل إلى عبادة الله وحده." },
+            { type: "poetry", content: "قال الإمام السفاريني في منظومته «الدُّرّة المُضيّة» في العقيدة:\nوبعدُ فاعلَمْ أنَّ كلَّ العِلْمِ ● كالفرعِ للتوحيدِ فاسمَعْ نَظْمِي" },
+            { type: "benefit", content: "قال العلامة المغربي <b>الحسن اليوسي</b> رحمه الله (ت ١١٠٢ هـ): «أمّا نسبة هذا العلم من العلوم الدينية كالتفسير والحديث والأصول والفقه، <b>فهو كُلّيٌّ لها وهي له جُزئيّات</b>»." },
+            { type: "benefit", content: "<b>الدُّرّة المُضيّة</b> للإمام السفاريني (ت ١١٨٨ هـ): متن منظوم (شعري) في علم العقيدة. والمتن هو مختصر وزُبدة وعصارة ما في علم من العلوم، وقد يكون نثريًّا (كمتن الآجرومية في النحو) أو شعريًّا (كألفية ابن مالك في النحو، وتحفة الأطفال في التجويد)." }
+          ]
+        },
+        {
+          heading: "المبدأ الخامس: الفضل",
+          items: [
+            { type: "text", content: "الفضل: ما مرتبة هذا العلم ومنزلته بين سائر العلوم؟" },
+            { type: "def", content: "علم التوحيد <b>مُقدَّم على سائر العلوم وهو أشرف العلوم قاطبة</b>. ويظهر فضله من عدة وجوه:" },
+            { type: "table", headers: ["الوجه", "البيان"], rows: [
+              ["موضوعه الله تعالى", "موضوع هذا العلم هو الله سبحانه وتعالى، وهو أشرف موضوع على الإطلاق"],
+              ["هو أصل العلوم", "بما أنه أصليٌّ وكلّيٌّ وكل العلوم متفرّعة عنه، فهو في الذروة"],
+              ["من ضلّ فيه لم تنفعه باقي العلوم", "لو أنّ الإنسان لم يكن موحّدًا ذا عقيدة سليمة فما تنفعه سائر العلوم التي سيتعلمها"],
+              ["ارتباطه بالغاية من خلق الإنسان", "يُعرّفك بالغاية التي من أجلها خُلقتَ: عبادة الله وتوحيده"]
+            ]},
+            { type: "quran", content: "﴿ وَمَا خَلَقْتُ الْجِنَّ وَالْإِنسَ إِلَّا لِيَعْبُدُونِ ﴾ — أي ليُوحّدوني كما قال المفسرون. فيتحتّم على الإنسان أن يتعلّم التوحيد ويعرف ما يُناقضه." },
+            { type: "warning", content: "لا يعني تفضيل علم التوحيد الانتقاصَ من باقي العلوم؛ فهي علوم فاضلة خادمة لعلم التوحيد." },
+            { type: "benefit", content: "تبقّت من المبادئ العشرة خمسة أخرى (الواضع، الاسم، الاستمداد، حكم الشارع، المسائل) — وستُكمَل في الدرس المقبل إن شاء الله." }
+          ]
+        }
+      ],
+      quiz: [
+        { q: "ما المقصود بـ«الفنّ» عند العلماء السابقين؟", opts: ["الرسم والنحت والتمثيل", "العلم ونوع من العلوم", "الحرفة والصناعة", "الأدب والشعر فقط"], c: 1, exp: "المقصود بـ«الفنّ» عند السابقين هو العلم (نوع من العلوم)، وليس ما يُعرف اليوم بالفنون كالرسم والنحت." },
+        { q: "من نظم أبيات المبادئ العشرة المشهورة؟", opts: ["محمد بن علي الصبّان الشافعي", "الإمام السفاريني", "الحسن اليوسي", "الإمام المقّري"], c: 0, exp: "نظمها محمد بن علي الصبّان الشافعي رحمه الله في ثلاثة أبيات مشهورة." },
+        { q: "ما معنى أن يكون الحدّ «جامعًا مانعًا»؟", opts: ["أن يكون طويلًا ومفصّلًا", "أن يجمع بين الرأي والنقل", "أن يجمع ما ينبغي أن يكون فيه ويُخرج ما ليس منه", "أن يمنع المبتدئين من الدخول في العلم"], c: 2, exp: "جامع: يجمع كل ما ينبغي أن يكون في التعريف. مانع: يُخرج ما ليس منه." },
+        { q: "ما هو التعريف الأول لعلم التوحيد والعقيدة؟", opts: ["العلم بالأحكام الشرعية العملية", "العلم بأسماء الله الحسنى فقط", "العلم بأحوال الأنبياء والرسل", "العلم الذي يُتوصّل به إلى الإيمان بوحدانية الله ومعرفة مقتضياتها"], c: 3, exp: "التعريف الأول: هو العلم الذي يُتوصّل به إلى الإيمان بوحدانية الله ومعرفة مقتضياتها." },
+        { q: "لماذا كان يُسمى علم التوحيد قديمًا بـ«الفقه الأكبر»؟", opts: ["لأن الدين عقيدة وشريعة، فالعقيدة هي الفقه الأكبر والفقه العملي هو الأصغر", "لأنه أكبر حجمًا من كتب الفقه", "لأن أبا حنيفة ألّف فيه كتابًا بهذا الاسم فقط", "لأنه يحتاج وقتًا أطول في الدراسة"], c: 0, exp: "الفقه الأكبر هو علم التوحيد والعقيدة، والفقه الأصغر هو الفقه العملي." },
+        { q: "ما الفرق الجوهري بين تعريف الفقه وتعريف علم التوحيد؟", opts: ["الفقه يعتمد النقل فقط والتوحيد يعتمد العقل فقط", "لا فرق بينهما — هما علم واحد", "الفقه يتعلق بالأحكام العملية والتوحيد يتعلق بالأحكام الاعتقادية", "الفقه أشرف من التوحيد"], c: 2, exp: "الفقه: أحكام شرعية عملية من أدلة تفصيلية. التوحيد: أحكام شرعية اعتقادية من أدلة صحيحة." },
+        { q: "ما هو موضوع علم التوحيد والعقيدة؟", opts: ["حياة الأنبياء والمرسلين", "أحكام العبادات والمعاملات", "أركان الإسلام الخمسة", "الله سبحانه وتعالى من جهة توحيده ومعرفة حقوقه"], c: 3, exp: "موضوع علم التوحيد: الله سبحانه وتعالى وحقوقه — من جهة توحيده ومعرفة ما يُثبت له وما يُنفى عنه." },
+        { q: "في حديث معاذ رضي الله عنه، ما هو حق الله على العباد؟", opts: ["أن يصلّوا ويصوموا", "أن يُوحّدوه ولا يُشركوا به شيئًا", "أن يتعلموا العلم الشرعي", "أن يُجاهدوا في سبيله"], c: 1, exp: "قال ﷺ: «حقّه أن يُوحّدوه ولا يُشركوا به شيئًا»." },
+        { q: "أيّ ثمرة من ثمرات علم التوحيد تتعلق بمواجهة التيارات الفكرية المعاصرة؟", opts: ["كشف الشبهات", "معرفة الأسماء والصفات", "تعلّم أحكام الصلاة", "حفظ المتون العلمية"], c: 0, exp: "كشف الشبهات: في عصر كثرت فيه التيارات الفكرية المناقضة للعقيدة، ترسيخ العقيدة يُحصّن المسلم." },
+        { q: "ما الدليل القرآني على وجوب تعلّم التوحيد؟", opts: ["﴿وَمَا خَلَقْتُ الْجِنَّ وَالْإِنسَ إِلَّا لِيَعْبُدُونِ﴾", "﴿اقْرَأْ بِاسْمِ رَبِّكَ الَّذِي خَلَقَ﴾", "﴿فَاعْلَمْ أَنَّهُ لَا إِلَٰهَ إِلَّا اللَّهُ﴾ — لأن «فاعلم» فعل أمر يفيد الوجوب", "﴿وَاعْبُدُوا اللَّهَ وَلَا تُشْرِكُوا بِهِ شَيْئًا﴾"], c: 2, exp: "﴿فَاعْلَمْ أَنَّهُ لَا إِلَٰهَ إِلَّا اللَّهُ﴾ — «فاعلم» فعل أمر يفيد الوجوب." },
+        { q: "ما معنى قول الإمام السفاريني «فاعلم أن كلّ العلم كالفرع للتوحيد»؟", opts: ["أن التوحيد فرع من العلوم الأخرى", "أن كل العلوم الشرعية متفرّعة عن علم التوحيد وخادمة له", "أن العلوم الشرعية لا علاقة لها بالتوحيد", "أن دراسة الفروع تُغني عن دراسة التوحيد"], c: 1, exp: "كل العلوم الشرعية كالفرع بالنسبة لعلم التوحيد، فهو الأصل وهي خادمة له." },
+        { q: "لماذا لا يُنسَب علم التوحيد إلى أي علم آخر؟", opts: ["لأنه علم حديث النشأة", "لأنه صعب الفهم", "لأن مباحثه قليلة", "لأنه أصل جميع العلوم الشرعية وهي خادمة له"], c: 3, exp: "لا يُنسب لأي علم لأنه أصل جميع العلوم الشرعية وكلها خادمة له ومتفرعة عنه." }
+      ],
+      revision: [
+        { q: "ما هي المبادئ العشرة لأي علم؟", a: "الحد، الموضوع، الثمرة، النسبة، الفضل، الواضع، الاسم، الاستمداد، حكم الشارع، المسائل. نظمها محمد بن علي الصبّان الشافعي في ثلاثة أبيات." },
+        { q: "ما هو حدّ (تعريف) علم التوحيد والعقيدة؟", a: "له تعريفان: ① العلم الذي يُتوصّل به إلى الإيمان بوحدانية الله ومعرفة مقتضياتها. ② العلم بالأحكام الشرعية الاعتقادية المُستنبَط من أدلتها الصحيحة (نقلية أو عقلية)." },
+        { q: "ما الفرق بين «الفقه الأكبر» و«الفقه الأصغر»؟", a: "الفقه الأكبر هو علم التوحيد والعقيدة، والفقه الأصغر هو الفقه العملي (أحكام العبادات والمعاملات). ثم اختفت هذه التسمية وصار «الفقه» يُطلق على الأصغر فقط." },
+        { q: "ما الفرق بين تعريف الفقه وتعريف التوحيد؟", a: "الفقه: العلم بالأحكام الشرعية العملية من أدلتها التفصيلية. التوحيد: العلم بالأحكام الشرعية الاعتقادية من أدلتها الصحيحة (نقلية أو عقلية)." },
+        { q: "ما هو موضوع علم التوحيد والعقيدة؟", a: "الله سبحانه وتعالى وحقوقه — من جهة توحيده ومعرفة ما ينبغي إثباته له ونفيه عنه، وليس من جهة تأمُّل الذات الإلهية." },
+        { q: "ما الدليل على أن موضوع علم التوحيد هو حقوق الله؟", a: "حديث معاذ: سأله النبي ﷺ «ما حق الله على العباد؟» قال: «حقّه أن يُوحّدوه ولا يُشركوا به شيئًا». «ما حق العباد على الله؟» قال: «ألّا يُعذّبهم» — أي يُدخلهم الجنة." },
+        { q: "اذكر أربعًا من ثمرات دراسة علم التوحيد.", a: "① معرفة التوحيد وحقيقته ② معرفة الله بأسمائه وصفاته ③ تصفية الاعتقاد من الشوائب والخرافات ④ تحقيق الإخلاص وتجنب الرياء ⑤ كشف الشبهات ⑥ البعد عن الشرك ⑦ التزكية." },
+        { q: "ما الآية التي تدل على وجوب تعلّم التوحيد؟", a: "﴿فَاعْلَمْ أَنَّهُ لَا إِلَٰهَ إِلَّا اللَّهُ وَاسْتَغْفِرْ لِذَنبِكَ﴾ — «فاعلم» فعل أمر يفيد الوجوب، فدلّ على وجوب تعلّم التوحيد." },
+        { q: "ما نسبة علم التوحيد إلى سائر العلوم الشرعية؟", a: "لا يُنسب لأي علم بل هو أصل العلوم الشرعية كلها. قال الحسن اليوسي: «فهو كلّي لها وهي له جزئيات». وقال السفاريني: «فاعلم أن كل العلم كالفرع للتوحيد»." },
+        { q: "لماذا يُعدّ علم التوحيد أشرف العلوم؟", a: "① موضوعه الله تعالى (أشرف موضوع) ② هو أصل كل العلوم ③ من ضلّ فيه لم تنفعه باقي العلوم ④ يعرّفك بالغاية من خلق الإنسان: التوحيد والعبادة." },
+        { q: "من هو الحسن اليوسي؟ وماذا قال عن نسبة علم التوحيد؟", a: "عالم مغربي جليل (ت ١١٠٢ هـ) من عهد بداية الدولة العلوية. قال: «أما نسبة هذا العلم من العلوم الدينية كالتفسير والحديث والأصول والفقه، فهو كلّي لها وهي له جزئيات»." },
+        { q: "ما هي الدُّرّة المُضيّة؟ ومن مؤلّفها؟", a: "منظومة شعرية (متن منظوم) في علم العقيدة، ألّفها الإمام السفاريني (ت ١١٨٨ هـ). والمتن هو مختصر وزُبدة ما في علم من العلوم، وقد يكون نثريًّا أو شعريًّا." }
+      ],
+      maps: [
+        { caption: "المبادئ العشرة لعلم التوحيد والعقيدة — الجزء الأول (الحدّ، الموضوع، الثمرة)", dataUrl: "img/map_tawhid_1.png" },
+        { caption: "المبادئ العشرة لعلم التوحيد والعقيدة — تابع (النسبة، الفضل)", dataUrl: "img/map_tawhid_2.png" }
+      ]
+    }
+  ],
+  nahw: [
+    {
+      num: 1,
+      title: "أهمية اللغة العربية وخارطة علومها — مدخل إلى علم النحو",
+      summary: [
+        {
+          heading: "تمهيد: اللغة العربية وعاء الدين كله",
+          items: [
+            { type: "text", content: "اللغة العربية هي <b>الأصل الأصيل والركن الركين</b> الذي تُبنى عليه علوم الشريعة كلها، وذلك أن القرآن مُنزَل بلسان عربي مبين، والنبي ﷺ أفصحُ من نطق الضاد، والصحابة رضوان الله عليهم كانوا عربًا أقحاحًا." },
+            { type: "quran", content: "﴿ إِنَّا أَنزَلْنَاهُ قُرْآنًا عَرَبِيًّا لَّعَلَّكُمْ تَعْقِلُونَ ﴾" },
+            { type: "benefit", content: "قال الإمام <b>الشاطبي</b> رحمه الله ما معناه: إنّ هذه الشريعة عربية، فمن كان <b>متمكنًا</b> في العربية فهو متمكّن في الشريعة، ومن كان <b>متوسطًا</b> فهو متوسط، ومن كان <b>ضعيفًا</b> فهو ضعيف. وهو معنًى صحيح من بدهيات هذا الدين." }
+          ]
+        },
+        {
+          heading: "العربية في علوم الشريعة",
+          items: [
+            { type: "text", content: "جميع العلوم الشرعية مؤسَّسة على اللسان العربي، فمن أراد أن يفهم كتاب الله وسنة رسوله ﷺ فلا بدّ من إتقان العربية:" },
+            { type: "table", headers: ["العلم الشرعي", "حاجته إلى العربية"], rows: [
+              ["التفسير", "كتب التفسير قائمة في جزء كبير منها على اللغة العربية — فأفضل ما يُفهم به كلام الله هو لسان العرب"],
+              ["الحديث", "أول ما يُبدأ به في شروح الحديث مسائل اللغة: معاني المفردات والتراكيب والإعراب والبلاغة"],
+              ["الفقه", "الفقه استنباط للأحكام من أدلتها، وهذا يحتاج إلى أصول الفقه، وأصول الفقه قائمة في جزئها الأكبر على اللغة العربية"],
+              ["العقائد", "العقائد تُؤخذ من الكتاب والسنة — فإذا أُحسن فهمهما استُنبطت أحكام عقدية سليمة"]
+            ]},
+            { type: "warning", content: "كثير من <b>المبتدعة</b> قديمًا — كالجعد والجهم ومن تبعهم — أُتُوا من جهة <b>عُجمتهم</b> وعجزهم عن فهم دقائق ما في كتاب الله، فاضطروا إلى التأويل والتعطيل ونحو ذلك من الانحرافات." }
+          ]
+        },
+        {
+          heading: "عاقبة التقصير في تعلّم العربية",
+          items: [
+            { type: "text", content: "من لم يُتقن العربية يجد <b>حاجزًا</b> بينه وبين كتب التراث، فيحتاج إلى من يُيسّر له كلام العلماء ويبسّطه ويقدّمه بأسلوب عصري. وفي هذه <b>الوسائط المتعددة</b> يضيع كثير من الأفكار الصحيحة." },
+            { type: "benefit", content: "نصيحة الشيخ: <b>اترك عنك الوسائط واعمد إلى الأصل مباشرة</b> — وذلك بإتقان اللغة العربية. فإذا أتقنتَها فتحتَ لنفسك باب النَّهْل المباشر من المعين." },
+            { type: "text", content: "أحال الشيخ على كتابه <b>«تكوين الملَكة اللغوية»</b> لمزيد من التفصيل في طرق إتقان العربية وتكوين الذائقة اللغوية." }
+          ]
+        },
+        {
+          heading: "خارطة علوم العربية — علوم الكلمة المفردة",
+          items: [
+            { type: "def", content: "الكلام العربي إما <b>كلمة واحدة</b> وإما <b>كلام مركّب</b>. وللتعامل مع الكلمة المفردة أربعة علوم:" },
+            { type: "table", headers: ["العلم", "موضوعه", "مثال"], rows: [
+              ["علم اللغة (المعاجم)", "معرفة معنى الكلمة — البحث في المعاجم اللغوية ودراستها", "ما معنى كلمة «فَطَر»؟ ← نبحث في المعجم"],
+              ["علم الصرف", "بنية الكلمة وهيئتها وصيغتها — النظر في بنيتها المجرّدة", "كاتب، كتاب، مكتوب، كُتُب — كلها من الكتابة لكن صِيَغها مختلفة"],
+              ["علم الاشتقاق", "أصل الكلمة وجذرها اللغوي — خصوصية العربية كلغة اشتقاقية", "الجذر (ك ت ب) ← منه: الكتابة، الكاتب، المكتوب، الكتاب..."],
+              ["علم الإملاء (الخط)", "قواعد كتابة الكلمة — خاصة مباحث الهمزة", "همزة الوصل والقطع، الهمزة المتوسطة والمتطرفة"]
+            ]},
+            { type: "benefit", content: "اللغة العربية <b>لغة اشتقاقية</b>: يوجد جذر لغوي من ثلاثة أحرف تُبنى منه عشرات الكلمات — وهذه خصوصية تميّزها عن كثير من اللغات." }
+          ]
+        },
+        {
+          heading: "خارطة علوم العربية — علوم الكلام المركّب",
+          items: [
+            { type: "text", content: "الكلمة لا توجد مستقلّة في واقع الأمر، بل توجد <b>مركّبة</b> مع كلمات أخرى في جملة. وللتعامل مع هذا التركيب عدّة علوم:" },
+            { type: "table", headers: ["العلم", "موضوعه", "مثال"], rows: [
+              ["علم النحو (أمّ العلوم)", "تغيّر أواخر الكلمات بحسب موقعها في الجملة", "قامَ زيدٌ — رأيتُ زيدًا — مررتُ بزيدٍ ← آخر كلمة «زيد» تغيّر"],
+              ["علم المعاني (من البلاغة)", "مطابقة الكلام لمقتضى الحال", "خالي الذهن: «قام زيد» — المتردد: «قد قام زيد» — المنكِر: «واللهِ إنّ زيدًا لقائم»"],
+              ["علم البيان (من البلاغة)", "التعبير عن المعنى الواحد بطرق مختلفة", "كريم — كالبحر في كرمه — كثير الرماد — مهزول الفصيل (كنايات عن الكرم)"],
+              ["علم البديع (من البلاغة)", "تحسين الكلام وتزيينه بالمحسّنات", "السجع، الجناس، الطباق، التورية"],
+              ["علم العروض والقوافي", "معرفة أوزان الشعر والتمييز بين النثر والنظم", "هل هذه الجملة نثر أم بيت شعري على البحر الفلاني؟"],
+              ["علم الأدب (الجامع)", "جماع العلوم المتقدمة كلها مع الأخلاق والقصص والسِّير", "كتب مثل: الأغاني، الكامل للمبرّد، كتب الجاحظ"]
+            ]},
+            { type: "def", content: "<b>علوم البلاغة ثلاثة:</b> علم المعاني + علم البيان + علم البديع — وهي تندرج كلها تحت علم واحد يُسمّى <b>علم البلاغة</b>." }
+          ]
+        },
+        {
+          heading: "علم النحو: أمّ علوم العربية",
+          items: [
+            { type: "def", content: "<b>علم النحو</b> هو أهم علوم العربية على الإطلاق وأَولاها بالاعتبار. وهو أوّل ما يُدرَس في علوم العربية المختلفة." },
+            { type: "text", content: "قديمًا كان إذا أُطلق <b>«علم العربية»</b> فالمراد به علم النحو — لشدّة أهميته ومحوريته." },
+            { type: "benefit", content: "من الناحية النظرية الأصل أن يُبدأ بعلم <b>الصرف</b> (معرفة المفردة مقدّم على معرفتها في التركيب)، لكن عمليًّا يُبدأ بالنحو لأن الصرف فيه صعوبة، ثم يأتي الصرف بعده أو معه." },
+            { type: "text", content: "لُبّ علوم العربية — على كثرتها — هو: <b>النحو أولًا</b>، ثم <b>الصرف والبلاغة</b> ثانيًا. وأما بقية العلوم فيمكن تداركها بسرعة." }
+          ]
+        },
+        {
+          heading: "المتن المدروس: مُتمّمة الآجُرّوميّة للإمام الحطّاب",
+          items: [
+            { type: "def", content: "<b>الآجُرّوميّة:</b> متن مشهور في النحو للمبتدئين، ألّفه <b>ابن آجُرّوم</b> رحمه الله. شروحه لا تُحصى وهو نافع جدًّا للمبتدئين." },
+            { type: "text", content: "جاء الإمام <b>الحطّاب الرُّعَيني</b> (ت ٩٥٤ هـ) — وهو من أئمة المالكية المشاهير — فتمّم الآجرومية بمباحث لم تكن فيها يحتاج إليها المبتدئ أيضًا، وحرص على الإتيان بشواهد من <b>القرآن الكريم</b> ما استطاع." },
+            { type: "table", headers: ["التعريف", "البيان"], rows: [
+              ["الآجرومية", "المتن الأصلي — لابن آجُرّوم — للمبتدئين في النحو"],
+              ["متممة الآجرومية", "تتميم وتكميل الآجرومية — للإمام الحطّاب — بمباحث إضافية وشواهد قرآنية"],
+              ["المؤلف: الإمام الحطّاب", "محمد بن محمد الرُّعَيني المالكي (ت ٩٥٤ هـ) — صاحب «مواهب الجليل على مختصر خليل» في الفقه المالكي و«قرّة العين على ورقات إمام الحرمين» في أصول الفقه"]
+            ]},
+            { type: "benefit", content: "من أتقن متممة الآجرومية يكون قد أتقن الأصل (الآجرومية) أيضًا، ويكون في مستوًى يقارب مستوى <b>شذور الذهب</b> أو <b>قطر الندى</b> لابن هشام رحمه الله." }
+          ]
+        }
+      ],
+      quiz: [
+        { q: "كيف وصف الشيخ اللغة العربية في علاقتها بالدين؟", opts: ["زينة الدين وحسنه", "وعاء الدين كله والأصل الأصيل", "أداة مساعدة فقط", "واحدة من وسائل الفهم المتعددة"], c: 1, exp: "قال الشيخ: اللغة العربية هي وعاء الدين كله والأصل الأصيل والركن الركين الذي تُبنى عليه علوم الشريعة كلها." },
+        { q: "ما مضمون كلام الإمام الشاطبي عن العلاقة بين العربية والشريعة؟", opts: ["من أتقن العربية فقد أتقن نصف الشريعة", "لا علاقة مباشرة بينهما", "من كان متمكنًا في العربية فهو متمكن في الشريعة ومن كان ضعيفًا فهو ضعيف", "العربية شرط للاجتهاد فقط لا للتعلم"], c: 2, exp: "قال الشاطبي: هذه الشريعة عربية، فمن كان متمكنًا في العربية فهو متمكن في الشريعة، ومن كان متوسطًا فمتوسط، ومن كان ضعيفًا فضعيف." },
+        { q: "لماذا وقع كثير من المبتدعة الأوائل في الانحراف — حسب ما ذكر الشيخ؟", opts: ["لضعف إيمانهم", "لتأثرهم بالفلسفة اليونانية فقط", "لعُجمتهم وعجزهم عن فهم دقائق كتاب الله", "لاعتمادهم على القياس دون النص"], c: 2, exp: "ذكر الشيخ أن كثيرًا من المبتدعة كالجعد والجهم أُتُوا من جهة عُجمتهم وعجزهم عن فهم دقائق ما في كتاب الله." },
+        { q: "كم عدد علوم العربية المرتبطة بالكلمة المفردة؟", opts: ["ثلاثة", "خمسة", "أربعة", "ستة"], c: 2, exp: "العلوم المرتبطة بالكلمة المفردة أربعة: علم اللغة، علم الصرف، علم الاشتقاق، علم الإملاء (الخط)." },
+        { q: "ما الفرق بين علم الصرف وعلم الاشتقاق؟", opts: ["لا فرق بينهما", "الصرف يبحث في بنية الكلمة والاشتقاق في أصلها وجذرها اللغوي", "الصرف للأفعال والاشتقاق للأسماء", "الصرف يبحث في المعنى والاشتقاق في الإعراب"], c: 1, exp: "علم الصرف يبحث في بنية الكلمة وصيغتها، وعلم الاشتقاق يبحث في أصلها وجذرها اللغوي (الثلاثي مثلًا)." },
+        { q: "ما هي فروع علم البلاغة الثلاثة؟", opts: ["النحو والصرف والإملاء", "المعاني والبيان والبديع", "العروض والقوافي والأدب", "اللغة والاشتقاق والخط"], c: 1, exp: "علوم البلاغة ثلاثة: علم المعاني (مطابقة الكلام لمقتضى الحال)، علم البيان (التعبير عن المعنى بطرق مختلفة)، علم البديع (تحسين الكلام وتزيينه)." },
+        { q: "ما هو علم المعاني؟", opts: ["علم يبحث في أوزان الشعر", "علم يبحث في معاني المفردات في المعاجم", "علم يبحث في مطابقة الكلام لمقتضى حال المخاطَب", "علم يبحث في تزيين الكلام بالمحسّنات"], c: 2, exp: "علم المعاني هو الذي يبحث في القواعد التي يأتي بها الكلام موافقًا لمقتضى الحال — فالمخاطَب خالي الذهن يُكتفى بالخبر، والمتردد يُؤكَّد له، والمنكِر يُبالَغ في التأكيد." },
+        { q: "لماذا يُسمى علم النحو بـ«أمّ علوم العربية»؟", opts: ["لأنه أقدمها تاريخيًّا", "لأنه أهمها وأَولاها بالاعتبار حتى إنه إذا أُطلق «علم العربية» أُريد به النحو", "لأنه أسهلها تعلّمًا", "لأنه يشمل جميع العلوم الأخرى"], c: 1, exp: "علم النحو هو أهم علوم العربية، وقديمًا كان إذا أُطلق «علم العربية» فالمراد به علم النحو." },
+        { q: "لماذا لا يُبدأ بعلم الصرف رغم أنه الأصل من الناحية النظرية؟", opts: ["لأن الصرف ليس مهمًّا", "لأن الصرف فيه صعوبة فيُؤخَّر بعد النحو", "لأن النحو يتضمّن الصرف بالكامل", "لأن الصرف لا يُحتاج إليه للمبتدئ"], c: 1, exp: "الأصل نظريًّا البدء بالصرف (معرفة المفردة مقدّم على التركيب)، لكن عمليًّا يُبدأ بالنحو لأن الصرف فيه نوع من الصعوبة." },
+        { q: "من هو مؤلف متممة الآجرومية؟", opts: ["ابن آجرّوم", "الإمام الشاطبي", "ابن هشام", "الإمام الحطّاب الرُّعَيني (ت ٩٥٤ هـ)"], c: 3, exp: "مؤلفها الإمام الحطّاب الرُّعيني (ت ٩٥٤ هـ) — من أئمة المالكية المشاهير." },
+        { q: "ما ميزة متممة الآجرومية عن الآجرومية الأصلية؟", opts: ["أنها أسهل وأقصر", "أنها تمّمتها بمباحث إضافية يحتاجها المبتدئ وأتت بشواهد قرآنية", "أنها ألغت المباحث الصعبة", "أنها باللغة العامية"], c: 1, exp: "تمّمها الحطّاب بمباحث لم تكن فيها يحتاج إليها المبتدئ، وحرص على الإتيان بشواهد من القرآن الكريم." },
+        { q: "من أتقن متممة الآجرومية يكون في مستوى يقارب أيّ كتاب؟", opts: ["ألفية ابن مالك", "مغني اللبيب", "شذور الذهب أو قطر الندى لابن هشام", "الكتاب لسيبويه"], c: 2, exp: "قال الشيخ: من أتقن هذا المتن يكون في مستوى يقارب مستوى شذور الذهب أو قطر الندى لابن هشام." }
+      ],
+      revision: [
+        { q: "كيف وصف الشيخ أهمية اللغة العربية لطالب العلم الشرعي؟", a: "اللغة العربية هي وعاء الدين كله والأصل الأصيل والركن الركين — ليست مفيدة فحسب بل ضرورية لا بدّ منها لكل طالب علم شرعي." },
+        { q: "ما مضمون كلام الإمام الشاطبي؟", a: "هذه الشريعة عربية: من كان متمكنًا في العربية فهو متمكن في الشريعة، ومن كان متوسطًا فمتوسط، ومن كان ضعيفًا فضعيف." },
+        { q: "كيف تظهر حاجة علوم الشريعة إلى العربية؟", a: "التفسير قائم على اللغة، وشروح الحديث تبدأ بمسائل اللغة، والفقه يحتاج إلى الأصول المبنية على اللغة، والعقائد تُستنبط من الكتاب والسنة بفهمهما السليم." },
+        { q: "اذكر علوم العربية الأربعة المرتبطة بالكلمة المفردة.", a: "① علم اللغة (المعاجم) ② علم الصرف (بنية الكلمة) ③ علم الاشتقاق (الجذر اللغوي) ④ علم الإملاء/الخط (قواعد الكتابة)." },
+        { q: "ما هو علم الصرف وما الفرق بينه وبين علم الاشتقاق؟", a: "الصرف يبحث في بنية الكلمة وصيغتها المجردة (كاتب، كتاب، مكتوب). الاشتقاق يبحث في أصلها وجذرها الثلاثي (ك ت ب → كتابة، كاتب، مكتوب...)." },
+        { q: "اذكر علوم العربية المرتبطة بالكلام المركّب.", a: "النحو، ثم البلاغة بأقسامها الثلاثة (المعاني، البيان، البديع)، ثم العروض والقوافي، ثم علم الأدب الجامع." },
+        { q: "ما هي علوم البلاغة الثلاثة مع تعريف موجز لكل منها؟", a: "① علم المعاني: مطابقة الكلام لمقتضى الحال. ② علم البيان: التعبير عن المعنى الواحد بطرق مختلفة. ③ علم البديع: تحسين الكلام وتزيينه (سجع، جناس، طباق، تورية)." },
+        { q: "اشرح مثال علم المعاني بمراتب المخاطَب.", a: "خالي الذهن → «قامَ زيدٌ» (بدون توكيد). المتردد → «قد قامَ زيد» أو «إنّ زيدًا قائم» (توكيد). المنكِر → «واللهِ إنّ زيدًا لقائم» (تأكيد مبالَغ بالقَسَم وإنّ واللام)." },
+        { q: "لماذا يُعدّ النحو أهم علوم العربية؟", a: "هو أهمها وأَولاها بالاعتبار، وأول ما يُدرس، حتى إنه قديمًا كان إذا أُطلق «علم العربية» أُريد به النحو." },
+        { q: "ما هو لُبّ علوم العربية وترتيب دراستها؟", a: "لبّها: النحو أولًا ثم الصرف والبلاغة ثانيًا. وأما بقية العلوم فيمكن تداركها بسرعة." },
+        { q: "عرّف بالآجرومية ومتممتها.", a: "الآجرومية: متن مشهور للمبتدئين ألّفه ابن آجرّوم. المتممة: تكميل لها ألّفه الإمام الحطّاب الرُّعيني (ت ٩٥٤ هـ) بمباحث إضافية وشواهد قرآنية." },
+        { q: "عرّف بالإمام الحطّاب.", a: "محمد بن محمد الرُّعيني المالكي (ت ٩٥٤ هـ). من أئمة المالكية المشاهير. من مؤلفاته: «مواهب الجليل على مختصر خليل» (فقه) و«قرّة العين على ورقات إمام الحرمين» (أصول فقه) و«متممة الآجرومية» (نحو)." }
+      ],
+      maps: [
+        { caption: "أهمية اللغة العربية لطالب العلم الشرعي", dataUrl: "img/map_nahw_1.png" },
+        { caption: "خارطة علوم العربية", dataUrl: "img/map_nahw_2.png" },
+        { caption: "متممة الآجرومية — صاحبها ومميزاتها", dataUrl: "img/map_nahw_3.png" }
+      ]
+    }
+  ],
+  tazkia: [
+    {
+      num: 1,
+      title: "مدخل إلى علم التزكية — القلب محلّ نظر الربّ والنور سبيل الوصول",
+      summary: [
+        {
+          heading: "تعريف علم التزكية وأسماؤه",
+          items: [
+            { type: "def", content: "<b>علم التزكية</b> يُسمّى أيضًا: علم <b>السلوك</b>، علم <b>العرفان</b>، علم <b>المعاملة</b>، علم <b>أحوال القلوب</b>. وهو العلم الشريف العظيم الجليل الذي يكون كالنهر العظيم الذي تصبّ فيه سائر العلوم." },
+            { type: "text", content: "غاية هذا العلم أن يحصّل الإنسان <b>قلبًا يعامل به ربّه</b> سبحانه وتعالى. فهو علم يختصّ بالقلب، والقلب محلّ نظر الربّ سبحانه." }
+          ]
+        },
+        {
+          heading: "القلب: محلّ نظر الربّ سبحانه",
+          items: [
+            { type: "hadith", content: "قال ﷺ: «إنّ الله لا ينظر إلى صُوَركم ولا إلى أجسامكم، ولكن ينظر إلى <b>قلوبكم</b> وإلى <b>أعمالكم</b>»" },
+            { type: "text", content: "الله عز وجل يطالع قلب عبده فيرى <b>نيّته</b> وقصده وباعثه إلى العمل، ويرى حاله في ملابسة العمل، ويرى غايته. و<b>تفاضل الأعمال بتفاضل ما في قلوب العمّال</b>." },
+            { type: "benefit", content: "<b>الأعمال صور ما في قلوب العمّال من الأحوال</b> — فالعمل ترجمان ما في القلب. فلو قضيت عمرك كله دارسًا أشرف العلوم — التوحيد والتفسير والفقه والتزكية — وليس لك إلا صورته، فإن ذلك لا يغني عن العبد شيئًا عند الله." },
+            { type: "hadith", content: "حديث النعمان بن بشير رضي الله عنهما في الصحيحين — وهو أحد أصول الإسلام: «... ألا وإنّ في الجسد <b>مُضغة</b> إذا صلحت صلح سائر الجسد وإذا فسدت فسد سائر الجسد، ألا وهي <b>القلب</b>»" },
+            { type: "text", content: "القلب كالأرض التي يبذر فيها الإنسان بذره، فتُثمر <b>الأحوال والأقوال والأعمال</b>. وهو ميدان القبول والإقبال على الله عز وجل." }
+          ]
+        },
+        {
+          heading: "القاعدة الأولى: لن تصل إلى الله إلا بالله",
+          items: [
+            { type: "def", content: "القاعدة الأولى الشريفة: <b>لن تصل إلى الله إلا بالله</b> سبحانه وتعالى." },
+            { type: "text", content: "وقد دلّت عليها خطبة الحاجة نفسها: فالأمر مبتدؤه «إنّ الحمد لله» — والحمد ثناء مع محبة، فالأصل الابتداء بالله. والعبد عائذ بالله من شرّ نفسه وسيئات عمله." },
+            { type: "benefit", content: "هذا يعني أنّ <b>فاصل الأصول في السير إلى الله</b> أنّ الوصول بالله لا بغيره سبحانه — فهو الذي يعطي التوفيق والهداية والنور." }
+          ]
+        },
+        {
+          heading: "القاعدة الثانية: على قدر حظّك من النور تكون استقامة سيرك",
+          items: [
+            { type: "def", content: "القاعدة الثانية: <b>على قدر حظّك من النور تكون استقامة سيرك ووضوح دربك وسلامة قصدك وسرعة وصولك إلى الغاية</b>." },
+            { type: "text", content: "الوصول على قدر الشهود — أي تحقيق «أشهد أن لا إله إلا الله وأنّ محمدًا رسول الله ﷺ». هذه هي الشمس التي تبثّ أنوارها في صدر الإنسان." },
+            { type: "quran", content: "﴿ أَوَمَن كَانَ مَيْتًا فَأَحْيَيْنَاهُ وَجَعَلْنَا لَهُ نُورًا يَمْشِي بِهِ فِي النَّاسِ ﴾" },
+            { type: "text", content: "ركنا هذا الإحياء: <b>التصوّر</b> (القوة العلمية) و<b>الإرادة</b> (القوة العملية) — أن يُبعث الإنسان من موت الغفلة ليكون مصطحبًا لهذا المصباح هاديًا في طريقه إلى رب العالمين." },
+            { type: "warning", content: "إذا لم يُصبغ القلب بالنور — والعياذ بالله — انحرف إلى النار. فإذا تلعثم هذا النور في قلب الإنسان تخبّطت نفسه في أودية الظلمة ولحقه العنتُ والتعب والمشقة." }
+          ]
+        },
+        {
+          heading: "ضعف الإنسان وحاجته إلى النور",
+          items: [
+            { type: "quran", content: "﴿ يُرِيدُ اللَّهُ أَن يُخَفِّفَ عَنكُمْ وَخُلِقَ الْإِنسَانُ ضَعِيفًا ﴾ — فلأنه ضعيف لحقته أنوار العناية والهداية." },
+            { type: "text", content: "الإنسان خُلق من التراب وهو ضعيف، والتراب قابل للتهيّؤ والتشكّل في كل صورة — فإذا لم يُصبغ بالنور انحرف." },
+            { type: "benefit", content: "<b>قصة الحدّاد:</b> أخذ شيخٌ تلميذه إلى حدّاد فرآه يأتي بالحديد المعوجّ فيضعه على النار ليقيمه. فقال الشيخ: يا بني، <b>لا يُعرض على النار إلا من كان معه عِوَج</b>. فالصلاة — قيل — اشتُقّت من التصلية: التعرّض للأنوار حتى تخرج علائق النار." },
+            { type: "benefit", content: "<b>قصة العسل والإناء:</b> قال شيخ لتلميذه: لديّ أفخر أنواع العسل، فائتِ بإناء — لكن لطِّخه بالطين وضَع فيه حصًى وترابًا! فتعجّب التلميذ: كيف أضع العسل في إناء قذر؟ فقال الشيخ: يا بني قد عرفتَ، فالزم — <b>لن تذوق لذّة الشراب حتى يطهر الإناء</b>." },
+            { type: "def", content: "التزكية هي: <b>الطهارة</b> و<b>النماء</b> و<b>الكمال</b> — تطهير القلب (الإناء) لاستقبال العلم والنور (العسل)." }
+          ]
+        },
+        {
+          heading: "التزكية ركن من أركان بعثة النبي ﷺ",
+          items: [
+            { type: "quran", content: "دعوة الخليل إبراهيم وابنه إسماعيل عليهما السلام: ﴿ رَبَّنَا وَابْعَثْ فِيهِمْ رَسُولًا مِّنْهُمْ يَتْلُو عَلَيْهِمْ آيَاتِكَ وَيُعَلِّمُهُمُ الْكِتَابَ وَالْحِكْمَةَ <b>وَيُزَكِّيهِمْ</b> ﴾" },
+            { type: "quran", content: "﴿ لَقَدْ مَنَّ اللَّهُ عَلَى الْمُؤْمِنِينَ إِذْ بَعَثَ فِيهِمْ رَسُولًا مِّنْ أَنفُسِهِمْ يَتْلُو عَلَيْهِمْ آيَاتِهِ <b>وَيُزَكِّيهِمْ</b> وَيُعَلِّمُهُمُ الْكِتَابَ وَالْحِكْمَةَ ﴾" },
+            { type: "text", content: "فأحد أركان ما بُعث به النبي ﷺ <b>تزكية القلوب</b> وتهيئتها لمعاملة علّام الغيوب سبحانه، واستنقاذ الناس من جاحمة النار." }
+          ]
+        },
+        {
+          heading: "مركزية النبي ﷺ في التزكية",
+          items: [
+            { type: "quran", content: "﴿ قَدْ جَاءَكُم مِّنَ اللَّهِ <b>نُورٌ</b> وَكِتَابٌ مُّبِينٌ ﴾ — النور هو النبي ﷺ." },
+            { type: "quran", content: "﴿ قُلْ إِن كُنتُمْ تُحِبُّونَ اللَّهَ <b>فَاتَّبِعُونِي</b> يُحْبِبْكُمُ اللَّهُ ﴾" },
+            { type: "text", content: "قال سفيان بن عيينة رحمه الله — شيخ الإمام الشافعي: النبي ﷺ هو <b>الميزان</b> الذي تُوزن عليه الأقوال والأعمال والأفعال وأقوال الرجال." },
+            { type: "benefit", content: "<b>إنّ الله سدّ كل الطرق الموصلة إليه وأبقى طريقًا واحدًا:</b> نبيّنا ﷺ. فكل قول أو فعل أو حال أو وارد — كل ذلك لا يلفت الإنسان عن النبي ﷺ." },
+            { type: "quran", content: "﴿ النَّبِيُّ أَوْلَىٰ بِالْمُؤْمِنِينَ مِنْ أَنفُسِهِمْ ﴾ — له الأولوية والأحبّية عليه صلوات الله وسلامه." },
+            { type: "warning", content: "المتزكّي لا ينصب أحدًا في موازاة النبي ﷺ، ولا يجعل الطلسمات والألفاظ المبهمة والأوراد المخترعة بابًا لتزكيته بعيدًا عن النبي ﷺ — بل <b>لفظه ﷺ هو الجامع للأنوار والبركات</b>." }
+          ]
+        },
+        {
+          heading: "علامة الولي الصادق",
+          items: [
+            { type: "def", content: "<b>علامة الولي</b> أنه دائمًا يدلّك على النبي ﷺ — فتعظّم النبي ﷺ وتحبّه. والنبي ﷺ يدلّك على ربّ العالمين." },
+            { type: "text", content: "فكل من أتى بعد النبي ﷺ من وليّ أو ملهَم أو محدَّث أو صدّيق — إنما يكونون <b>تبعًا</b> له ﷺ. فعلى قدر حظّ الإنسان من نوره ﷺ تكون استقامته وبصيرته وإمامته وصلته بالله." },
+            { type: "benefit", content: "علامة الولي أنه <b>يُشرب قلبك حبّ النبي ﷺ</b> ويجعل نفسك توّاقة للاقتداء به ﷺ ولتعظيم أمره وسنّته — هذا هو باب التزكية العظيم." }
+          ]
+        },
+        {
+          heading: "القلب وأعداؤه — تمهيد لما سيأتي",
+          items: [
+            { type: "text", content: "القلب هو الحصن الذي فيه ذخائر العرفان، وهو الذي به النجاة، وهو موضع نظر الربّ، وهو <b>الملِك</b> الذي تأتمر بأمره الجوارح." },
+            { type: "warning", content: "لهذا القلب <b>متربّصون وأعداء وقواطع وأضداد</b> — سيأتي الحديث عنها تفصيلًا في الدروس القادمة إن شاء الله." },
+            { type: "benefit", content: "خلاصة هذه المحاضرة الأولى: هذا العلم الشريف إنما هو على ضفاف <b>كوثر النبي ﷺ</b> — فالمستقون بغُرفة المحبة في هذه الدنيا هم الواردون عليه في كوثر الآخرة يوم القيامة إن شاء الله." }
+          ]
+        }
+      ],
+      quiz: [
+        { q: "ما هي أسماء علم التزكية كما ذكرها الشيخ؟", opts: ["علم الفقه وعلم الأصول", "علم السلوك وعلم العرفان وعلم المعاملة وعلم أحوال القلوب", "علم الكلام وعلم التوحيد", "علم التفسير وعلم الحديث"], c: 1, exp: "ذكر الشيخ أنّ علم التزكية يُسمّى أيضًا: علم السلوك، علم العرفان، علم المعاملة، علم أحوال القلوب." },
+        { q: "ما معنى قوله ﷺ: «إنّ الله لا ينظر إلى صوركم ولا إلى أجسامكم»؟", opts: ["أنّ الله لا يرى المخلوقات", "أنّ العبرة بالقلوب والأعمال لا بالمظاهر", "أنّ الصور والأجسام ليست من خلق الله", "أنّ العبادة لا تحتاج إلى جسد"], c: 1, exp: "المراد أنّ الله ينظر إلى قلوب العباد وأعمالهم لا إلى صورهم وأجسامهم — فالقلب محلّ نظر الربّ." },
+        { q: "ما القاعدة الأولى التي ذكرها الشيخ في السير إلى الله؟", opts: ["على قدر العلم يكون العمل", "لن تصل إلى الله إلا بالله", "من جدّ وجد ومن زرع حصد", "العلم قبل القول والعمل"], c: 1, exp: "القاعدة الأولى: لن تصل إلى الله إلا بالله — فالوصول بالله لا بغيره سبحانه." },
+        { q: "ما القاعدة الثانية وما مفادها؟", opts: ["كلما زاد العلم زاد الخشوع", "على قدر حظك من النور تكون استقامة سيرك", "من ترك شيئًا لله عوّضه الله خيرًا منه", "الدين المعاملة"], c: 1, exp: "على قدر حظك من النور تكون استقامة سيرك ووضوح دربك وسلامة قصدك وسرعة وصولك إلى الغاية." },
+        { q: "ما المراد بالنور في قوله تعالى ﴿قد جاءكم من الله نور وكتاب مبين﴾ حسب ما ذكر الشيخ؟", opts: ["القرآن الكريم", "العقل", "النبي ﷺ", "الإيمان"], c: 2, exp: "قال الشيخ: النور هو النبي ﷺ — فهو النور الذي جاء من الله ليهدي الناس." },
+        { q: "ما العبرة من قصة الحدّاد؟", opts: ["أنّ الحديد لا يلين إلا بالنار", "أنّ لا يُعرض على النار إلا من كان معه عِوَج — والصلاة تعرّض للأنوار لتقويم النفس", "أنّ الحدادة حرفة شريفة", "أنّ النار تطهّر كل شيء"], c: 1, exp: "العبرة أنّ من كان فيه عوج يحتاج إلى نار التقويم — والصلاة (من التصلية) تعرّض للأنوار حتى تخرج علائق النار والعوج." },
+        { q: "ما العبرة من قصة العسل والإناء؟", opts: ["أنّ العسل شفاء", "أنّ الإناء القذر لا يصلح لحفظ العسل — فلا بدّ من تطهير القلب لاستقبال العلم والنور", "أنّ الطين نجس", "أنّ العسل غالي الثمن فيحتاج إناءً ثمينًا"], c: 1, exp: "لن تذوق لذة الشراب (العلم والنور) حتى يطهر الإناء (القلب) — والتزكية هي الطهارة والنماء والكمال." },
+        { q: "ما معنى التزكية لغةً كما ذكر الشيخ؟", opts: ["العبادة والطاعة", "الطهارة والنماء والكمال", "الزهد في الدنيا", "كثرة الذكر"], c: 1, exp: "التزكية هي: الطهارة والنماء والكمال." },
+        { q: "ماذا قال سفيان بن عيينة عن النبي ﷺ؟", opts: ["هو خاتم الأنبياء", "هو الشفيع يوم القيامة", "هو الميزان الذي توزن عليه الأقوال والأعمال وأقوال الرجال", "هو أفضل البشر"], c: 2, exp: "قال سفيان بن عيينة — شيخ الإمام الشافعي: النبي ﷺ هو الميزان الذي توزن عليه الأقوال والأعمال والأفعال وأقوال الرجال." },
+        { q: "ما علامة الولي الصادق حسب ما ذكر الشيخ؟", opts: ["كثرة الكرامات والخوارق", "أنه يدلّك دائمًا على النبي ﷺ ويُشربك حبّه", "أنه يعتزل الناس ويتفرغ للعبادة", "أنه يعلم الغيب ويخبر بالمستقبل"], c: 1, exp: "علامة الولي أنه دائمًا يدلّك على النبي ﷺ فتعظّمه وتحبّه — ويُشرب قلبك حبّ النبي ﷺ ويجعل نفسك توّاقة للاقتداء به." },
+        { q: "لماذا حذّر الشيخ من الطلسمات والألفاظ المبهمة والأوراد المخترعة؟", opts: ["لأنها حرام شرعًا فقط", "لأنها تكون بابًا للتزكية بعيدًا عن النبي ﷺ بينما لفظه ﷺ هو الجامع للأنوار", "لأنها صعبة الحفظ", "لأنها بلغة غير عربية"], c: 1, exp: "حذّر الشيخ لأنّ المتزكّي لا ينبغي أن ينصب شيئًا في موازاة النبي ﷺ — بل لفظه ﷺ هو الجامع للأنوار والبركات وذخائر العرفان." },
+        { q: "كيف ختم الشيخ المحاضرة الأولى؟", opts: ["بذكر أعداء القلب تفصيلًا", "بأنّ هذا العلم على ضفاف كوثر النبي ﷺ والمستقون بالمحبة هم الواردون عليه يوم القيامة", "بسرد قائمة المراجع", "بامتحان الطلبة"], c: 1, exp: "ختم بأنّ هذا العلم الشريف إنما هو على ضفاف كوثر النبي ﷺ — فالمستقون بغُرفة المحبة في الدنيا هم الواردون عليه في كوثر الآخرة." }
+      ],
+      revision: [
+        { q: "ما هو علم التزكية وما أسماؤه؟", a: "هو العلم المختصّ بالقلب وأحواله — يُسمّى أيضًا: علم السلوك، علم العرفان، علم المعاملة، علم أحوال القلوب. غايته أن يحصّل الإنسان قلبًا يعامل به ربّه سبحانه." },
+        { q: "لماذا القلب هو أهمّ عضو عند الله؟", a: "لأنه محلّ نظر الربّ — «إنّ الله لا ينظر إلى صوركم... ولكن ينظر إلى قلوبكم». وهو المضغة التي إذا صلحت صلح سائر الجسد. وتفاضل الأعمال بتفاضل ما في قلوب العمّال." },
+        { q: "ما القاعدة الأولى في السير إلى الله؟", a: "لن تصل إلى الله إلا بالله — فالأصل الابتداء بالله، والوصول بالله لا بغيره سبحانه." },
+        { q: "ما القاعدة الثانية؟", a: "على قدر حظّك من النور تكون استقامة سيرك ووضوح دربك وسلامة قصدك وسرعة وصولك إلى الغاية." },
+        { q: "ما ركنا الإحياء الذي ذكرهما الشيخ؟", a: "① التصوّر (القوة العلمية) ② الإرادة (القوة العملية) — كما في قوله تعالى: ﴿أو من كان ميتًا فأحييناه وجعلنا له نورًا يمشي به في الناس﴾." },
+        { q: "ما العبرة من قصة الحدّاد؟", a: "لا يُعرض على النار إلا من كان معه عِوَج — والصلاة (من التصلية) تعرّض للأنوار لتقويم القلب وإخراج علائق النار." },
+        { q: "ما العبرة من قصة العسل والإناء؟ وما معنى التزكية؟", a: "لن تذوق لذّة الشراب (العلم/النور) حتى يطهر الإناء (القلب). والتزكية هي: الطهارة والنماء والكمال." },
+        { q: "كيف تظهر التزكية في بعثة النبي ﷺ؟", a: "التزكية ركن من أركان بعثته ﷺ — ذُكرت في دعوة إبراهيم (ويزكّيهم) وفي الامتنان الإلهي (لقد منّ الله على المؤمنين... ويزكّيهم)." },
+        { q: "ما مكانة النبي ﷺ في التزكية؟", a: "هو النور (قد جاءكم من الله نور)، وهو الميزان (قول سفيان بن عيينة)، والله سدّ كل الطرق الموصلة إليه وأبقى طريقًا واحدًا: النبي ﷺ. والتزكية كلها بيديه ومن ورائه ومتلقّاة منه ﷺ." },
+        { q: "ما علامة الولي الصادق؟", a: "أنه دائمًا يدلّك على النبي ﷺ — يُشرب قلبك حبّه ﷺ ويجعل نفسك توّاقة للاقتداء به. فالولي يدلّك على النبي والنبي يدلّك على ربّ العالمين." },
+        { q: "ممّا حذّر الشيخ في باب التزكية؟", a: "حذّر من نصب أحد في موازاة النبي ﷺ، ومن الطلسمات والألفاظ المبهمة والأوراد المخترعة التي تكون بابًا للتزكية بعيدًا عنه ﷺ — بل لفظه هو الجامع للأنوار والبركات." },
+        { q: "ما خلاصة المحاضرة الأولى في التزكية؟", a: "هذا العلم الشريف إنما هو على ضفاف كوثر النبي ﷺ. القلب محلّ نظر الربّ ويحتاج إلى النور والتطهير. وأصل الأصول: الوصول بالله، ومتابعة النبي ﷺ، وتطهير القلب لاستقبال النور." }
+      ],
+      maps: [],
+      mindmap: {
+        center: "مدخل إلى التزكية — القلب والنور",
+        branches: [
+          { label: "القلب محلّ نظر الربّ", items: [
+            "«إنّ الله لا ينظر إلى صوركم... ولكن ينظر إلى <b>قلوبكم</b>»",
+            "المضغة: إذا صلحت صلح <b>سائر الجسد</b>",
+            "الأعمال صور ما في قلوب العمّال من الأحوال"
+          ]},
+          { label: "قاعدتان شريفتان", items: [
+            "① <b>لن تصل إلى الله إلا بالله</b>",
+            "② على قدر حظّك من <b>النور</b> تكون استقامة سيرك",
+            "ركنا الإحياء: <b>التصوّر</b> (علمي) و<b>الإرادة</b> (عملي)"
+          ]},
+          { label: "معنى التزكية", items: [
+            "<b>الطهارة والنماء والكمال</b>",
+            "قصة العسل: لن تذوق لذّة الشراب حتى يطهر <b>الإناء</b>",
+            "قصة الحدّاد: لا يُعرض على النار إلا من كان معه <b>عِوَج</b>"
+          ]},
+          { label: "التزكية في بعثة النبي ﷺ", items: [
+            "ركن من أركان البعثة: <b>ويُزكّيهم</b>",
+            "هو ﷺ <b>النور</b> والميزان (سفيان بن عيينة)",
+            "الله سدّ كل الطرق وأبقى طريقًا واحدًا: <b>النبي ﷺ</b>"
+          ]},
+          { label: "علامة الولي الصادق", items: [
+            "دائمًا <b>يدلّك على النبي ﷺ</b>",
+            "يُشرب قلبك حبّه ﷺ ويجعلك توّاقًا للاقتداء",
+            "تحذير: لا طلسمات ولا أوراد مخترعة بعيدًا عنه ﷺ"
+          ]}
+        ]
+      }
+    }
+  ],
+  fiqh: [
+    {
+      num: 1,
+      title: "المبادئ العشرة لعلم الفقه — المدخل إلى الفقه الإسلامي",
+      summary: [
+        {
+          heading: "فضل طلب العلم",
+          items: [
+            { type: "hadith", content: "حديث معاوية بن أبي سفيان رضي الله عنه في صحيح البخاري: قال ﷺ: «مَن يُرِد الله به خيرًا <b>يُفَقِّهْه في الدين</b>»" },
+            { type: "hadith", content: "حديث أبي الدرداء رضي الله عنه (رواه أبو داود والترمذي والنسائي في الكبرى وابن ماجه): «مَن سلك طريقًا يلتمس فيه علمًا سهّل الله له به طريقًا إلى الجنة، وإنّ الملائكة لتضع أجنحتها لطالب العلم رضًا بما يصنع، وإنّ العالم ليستغفر له مَن في السماوات ومن في الأرض حتى الحيتان في الماء، وفضل العالم على العابد كفضل القمر على سائر الكواكب، وإنّ العلماء ورثة الأنبياء، وإنّ الأنبياء لم يُوَرِّثوا دينارًا ولا درهمًا وإنما ورّثوا العلم، فمن أخذه أخذ بحظٍّ وافر»" },
+            { type: "benefit", content: "طلب العلم <b>علامة على التوفيق والخيرية</b>، وهو سبيل الجنة وسبيل المكرمات. لا يُوفَّق له إلا من أراد الله عز وجل به خيرًا." }
+          ]
+        },
+        {
+          heading: "آداب طلب العلم وشروطه",
+          items: [
+            { type: "def", content: "<b>الإخلاص لله رب العالمين:</b> العلم الشرعي عبادة يُتقرَّب بها إلى الله، وشرط قبولها الإخلاص." },
+            { type: "quran", content: "﴿ فَاعْبُدِ اللَّهَ مُخْلِصًا لَّهُ الدِّينَ ﴾" },
+            { type: "hadith", content: "«مَن طلب علمًا مما يُبتغى به وجهُ الله لا يتعلّمه إلا ليُصيب عَرَضًا من الدنيا لم يجد عَرْف الجنة يوم القيامة» — أي لا يجد رائحتها، نسأل الله السلامة." },
+            { type: "def", content: "<b>الصبر والمصابرة والمثابرة:</b> طريق العلم طويل وفيه مشقة، فلا بدّ من الصبر وعلوّ الهمة." },
+            { type: "text", content: "قال يحيى بن أبي كثير (رواه مسلم): <b>«لا يُستطاع العلم براحة الجسد»</b>. وقال تعالى: ﴿يا يحيى خُذِ الكتاب بقوة﴾. وقال ﷺ: «المؤمن القوي خير وأحبّ إلى الله من المؤمن الضعيف وفي كلٍّ خير، احرص على ما ينفعك واستعن بالله ولا تعجز»." },
+            { type: "def", content: "<b>الحفظ والمذاكرة:</b> لا بدّ من حفظ المتون والأنظام والمسائل حتى يجمع الإنسان شتات العلم." },
+            { type: "poetry", content: "قال الشافعي رحمه الله:\nأخي لن تنال العلم إلا بستّة\nسأُنبيك عن تفصيلها ببيان:\n<b>ذكاءٌ وحرصٌ واجتهادٌ وغُربةٌ\nوصحبةُ أستاذٍ وطولُ زمان</b>" },
+            { type: "def", content: "<b>العمل بالعلم:</b> العمل هو الغاية من العلم. إذا لم يعمل الإنسان بما تعلّم يكون العلم وبالًا عليه وحجةً عليه لا له." },
+            { type: "text", content: "قال علي بن أبي طالب رضي الله عنه: <b>«هَتَف العلمُ بالعمل، فإن أجابه وإلا ارتحل»</b>. وبالعمل يثبت العلم ويزكو وتظهر بركته." }
+          ]
+        },
+        {
+          heading: "الحدّ: تعريف الفقه لغةً واصطلاحًا",
+          items: [
+            { type: "def", content: "<b>الفقه لغةً:</b> الفهم. يُقال: فَقِهَ الشيءَ يَفقَهُه إذا فهمه وعلمه. وقيل: الفقه أخصّ وأدقّ من الفهم." },
+            { type: "quran", content: "قال تعالى على لسان موسى عليه السلام: ﴿ يَفْقَهُوا قَوْلِي ﴾ أي يفهموا. وقال قوم شعيب: ﴿ يَا شُعَيْبُ مَا نَفْقَهُ كَثِيرًا مِمَّا تَقُولُ ﴾" },
+            { type: "text", content: "مادته اللغوية <b>مُثلَّثة القاف:</b> فَقِهَ (فَهِم وعَلِم)، فَقُهَ (صار الفقه له سجيةً فصار فقيهًا)، فَقَهَ (سبق غيره في الفقه)." },
+            { type: "def", content: "<b>الفقه اصطلاحًا:</b> «العلم بالأحكام الشرعية العملية المكتسَب من أدلتها التفصيلية»." },
+            { type: "warning", content: "هذا التعريف <b>جامع مانع:</b> يجمع كل عناصر المعرَّف ويمنع دخول غيره فيه — وهو منهج العلماء في التعريف." }
+          ]
+        },
+        {
+          heading: "شرح ألفاظ التعريف الاصطلاحي",
+          items: [
+            { type: "def", content: "<b>العلم:</b> إدراك الشيء على ما هو عليه، وضدّه الجهل." },
+            { type: "def", content: "<b>بالأحكام:</b> جمع حُكم، وهو لغةً: إثبات شيء لشيء أو نفيُه عنه. مثال: «محمد طيب الأخلاق» (إثبات)، «محمد ليس لعّانًا» (نفي)." },
+            { type: "benefit", content: "<b>الأحكام ثلاثة أنواع:</b><br>① <b>حكم شرعي:</b> يُدرَك بالشرع (الكتاب والسنة)<br>② <b>حكم عقلي:</b> يُدرَك بالعقل (الكلّ أكبر من الجزء)<br>③ <b>حكم عادي:</b> يُدرَك بالعادة والتجربة (الثلج بارد، النار تُحرق)" },
+            { type: "text", content: "قيد <b>«الشرعية»</b> يُخرج الحكم العقلي والعادي. وقيد <b>«بالأحكام»</b> يُخرج العلم بالذوات والصفات والأفعال." },
+            { type: "text", content: "قيد <b>«العملية»</b> يُخرج الأحكام الاعتقادية (صفات الله، اليوم الآخر...) — وإن كان أبو حنيفة رحمه الله يسمّي العقيدة «الفقه الأكبر» بالمفهوم الأشمل." },
+            { type: "text", content: "قيد <b>«المكتسَب»</b> يُخرج ما يقذفه الله في قلوب أنبيائه ورُسله من أنوار العلم، فذاك ليس مكتسبًا." },
+            { type: "text", content: "قيد <b>«من أدلتها التفصيلية»</b> أي كل حكم مع دليله الخاص: الصلاة واجبة ← ﴿وأقيموا الصلاة﴾، الزكاة واجبة ← ﴿وآتوا الزكاة﴾، الربا حرام ← ﴿ذَرُوا ما بقي من الربا﴾." }
+          ]
+        },
+        {
+          heading: "الموضوع والثمرة",
+          items: [
+            { type: "def", content: "<b>موضوع علم الفقه:</b> أفعال المُكلَّفين من حيث ما يثبت لها من أحكام: وجوب، حُرمة، إباحة، ندب، كراهة." },
+            { type: "text", content: "يتناول صلاته وزكاته وصيامه وحجه وزواجه وطلاقه وبيعه وشراءه وعقوباته." },
+            { type: "benefit", content: "<b>ثمرات علم الفقه:</b><br>① <b>تصحيح العبادات والمعاملات:</b> ﴿أَفَحَسِبْتُمْ أَنَّمَا خَلَقْنَاكُمْ عَبَثًا﴾ — فالعبد ليس هَمَلًا<br>② <b>حسن امتثال الأمر وترك النهي</b> = تحقيق التقوى. قال ابن عاشر: «وحاصل التقوى اجتنابٌ وامتثال»<br>③ <b>تحصيل رضا الله ونيل الأجر</b><br>④ <b>انتظام أمر المعاش والمعاد</b>" },
+            { type: "warning", content: "قصة حذيفة بن اليمان رضي الله عنه: رأى رجلًا يصلي فقال: منذ كم تصلي هكذا؟ قال: منذ 40 سنة! قال: <b>تصلي منذ 40 سنة ولو مُتَّ مُتَّ على غير فطرة</b>، لأن هذه ليست صلاة النبي ﷺ. وفي حديث المسيء صلاته قال ﷺ: «ارجع فصلِّ فإنك لم تُصلِّ» — فلا بدّ من الفقه لتصحيح العبادة." }
+          ]
+        },
+        {
+          heading: "النسبة والفضل",
+          items: [
+            { type: "def", content: "<b>نسبته:</b> علم الفقه من العلوم الشرعية، والنسبة بينه وبينها <b>التباين</b> — أي هو علم مستقل مباين للعلوم الأخرى وإن كانت بينها صلات." },
+            { type: "quran", content: "في فضله قال تعالى: ﴿ فَلَوْلَا نَفَرَ مِن كُلِّ فِرْقَةٍ مِّنْهُمْ طَائِفَةٌ لِّيَتَفَقَّهُوا فِي الدِّينِ وَلِيُنذِرُوا قَوْمَهُمْ إِذَا رَجَعُوا إِلَيْهِمْ لَعَلَّهُمْ يَحْذَرُونَ ﴾" },
+            { type: "text", content: "قال الإمام الشافعي رحمه الله: «مَن حفظ القرآن عظمت حُرمته، ومَن طلب الفقه <b>نَبُل قدره</b>، ومن وعى الحديث قويت حجته، ومن لم يصُن نفسه لم يصُنه العلم»." },
+            { type: "text", content: "وقال ابن الجوزي رحمه الله: <b>«بضاعة الفقه البضاعة الرابحة»</b>. فالإنسان في أمسّ الحاجة إلى التفقه في دينه." }
+          ]
+        },
+        {
+          heading: "الواضع والاسم والاستمداد",
+          items: [
+            { type: "text", content: "<b>الواضع:</b> الله سبحانه هو الذي أنزل التشريعات والأحكام على رسوله ﷺ، والنبي ﷺ علّمها الأمة، ثم الصحابة اجتهدوا في القضايا الجديدة، ثم التابعون وأتباعهم حتى استوى هذا العلم على ساقه." },
+            { type: "benefit", content: "أول من أخرج الفقه في صورته المعروفة: <b>الإمام أبو حنيفة النعمان</b> رحمه الله. قال الشافعي كما روى الذهبي في السِّيَر: <b>«الناس في الفقه عِيال على أبي حنيفة»</b>. وأقدم كتاب فقه بين أيدينا هو <b>«الموطأ»</b> للإمام مالك رحمه الله." },
+            { type: "def", content: "<b>أسماؤه:</b> علم الفقه، علم الفروع، علم الحلال والحرام، علم الأحكام والشرائع — والمسمّى واحد." },
+            { type: "def", content: "<b>استمداده:</b> يُستمدّ هذا العلم من: ① <b>الكتاب العزيز</b> ② <b>السنة المطهرة</b> ③ <b>إجماع العلماء</b> ④ <b>القياس</b> ⑤ <b>اللغة العربية</b>." }
+          ]
+        },
+        {
+          heading: "حكم تعلّمه ومسائله",
+          items: [
+            { type: "def", content: "<b>حكم تعلّمه:</b> واجب — وينقسم إلى قسمين:" },
+            { type: "benefit", content: "① <b>وجوب عيني:</b> ما يجب على كل مكلّف بعينه أن يعرفه — كأحكام ما يباشره من عبادات (وجبت عليه الصلاة فيجب أن يتعلم أحكامها، وكذا الزكاة والصيام والحج والزواج والبيع).<br>② <b>وجوب كفائي:</b> ما يتعيّن على البعض دون البعض الآخر، فإن عرفه البعض سقط عن غيرهم." },
+            { type: "def", content: "<b>مسائله الكبرى (أقسام الفقه):</b>" },
+            { type: "text", content: "① <b>العبادات:</b> صلاة، زكاة، صيام، حج<br>② <b>المعاملات:</b> بيوع، إجارة، رهن، شركة<br>③ <b>المناكحات:</b> زواج، طلاق، رضاع، حضانة، خلع<br>④ <b>العقوبات (الأحكام الجنائية):</b> حدّ القتل، السرقة، الزنا، شرب الخمر..." }
+          ]
+        },
+        {
+          heading: "المقرر الدراسي والنظم",
+          items: [
+            { type: "benefit", content: "المقرر المعتمد في دراسة الفقه: <b>نظم الإمام عبد الواحد بن أحمد بن علي بن عاشر</b> رحمه الله — وهو نظم مبارك شامل يُدرَس ويُشرح." },
+            { type: "poetry", content: "ومن نظم ابن الصبّان في المبادئ العشرة:\nإنّ مبادي كلّ علمٍ عشرَه\nالحَدُّ والموضوعُ ثمّ الثمرَه\nونِسبةٌ وفضلُهُ والواضِع\nوالاسمُ الاستمدادُ حُكمُ الشارِع\nمسائلٌ والبعضُ بالبعض اكتفى\nومن درى الجميعَ حاز الشَّرَفا" }
+          ]
+        }
+      ],
+      quiz: [
+        { q: "ما معنى الفقه لغةً؟", opts: ["القراءة والكتابة", "الحكم والقضاء", "الفهم والعلم", "الرأي والاجتهاد"], c: 2, exp: "الفقه لغةً هو الفهم. يُقال: فَقِهَ الشيءَ يَفقَهُه إذا فهمه وعلمه." },
+        { q: "ما تعريف الفقه اصطلاحًا؟", opts: ["العلم بالأحكام الشرعية العملية المكتسب من أدلتها التفصيلية", "العلم بالعقائد الإيمانية", "العلم بأحوال القلوب", "العلم بتفسير القرآن الكريم"], c: 0, exp: "الفقه اصطلاحًا: العلم بالأحكام الشرعية العملية المكتسب من أدلتها التفصيلية." },
+        { q: "ما أنواع الأحكام الثلاثة كما ذكر الشيخ؟", opts: ["قطعي وظني ومحتمل", "حكم فردي وجماعي ودولي", "أمر ونهي وإباحة", "حكم شرعي وعقلي وعادي"], c: 3, exp: "الأحكام ثلاثة: شرعي (يُدرك بالشرع)، عقلي (يُدرك بالعقل)، عادي (يُدرك بالعادة والتجربة)." },
+        { q: "لماذا قُيّد التعريف بـ«العملية»؟", opts: ["لإخراج الأحكام الاعتقادية", "لإخراج الأحكام اللغوية", "لإخراج أحكام الجن", "لإخراج العلوم الطبيعية"], c: 0, exp: "قيد «العملية» لإخراج الأحكام الاعتقادية (العقائد) التي ليست في حدّ ذاتها عملًا — كصفات الله واليوم الآخر." },
+        { q: "مَن قال: «الناس في الفقه عيال على أبي حنيفة»؟", opts: ["الإمام مالك", "الإمام الشافعي", "الإمام أحمد", "سفيان الثوري"], c: 1, exp: "قال الإمام الشافعي رحمه الله كما روى الذهبي في السير: «الناس في الفقه عيال على أبي حنيفة»." },
+        { q: "ما هي مصادر استمداد علم الفقه؟", opts: ["العقل والتجربة فقط", "القرآن فقط", "الكتاب والسنة والإجماع والقياس واللغة العربية", "آراء العلماء فقط"], c: 2, exp: "يُستمدّ الفقه من: الكتاب العزيز، السنة المطهرة، إجماع العلماء، القياس، واللغة العربية." },
+        { q: "ما الفرق بين الوجوب العيني والكفائي في تعلم الفقه؟", opts: ["لا فرق بينهما", "العيني للرجال والكفائي للنساء", "العيني ما يجب على كل مكلف بعينه والكفائي يسقط بفعل البعض", "العيني مستحب والكفائي واجب"], c: 2, exp: "الوجوب العيني: يجب على كل مكلف بعينه (كأحكام ما يباشره). الكفائي: إذا عرفه البعض سقط عن غيرهم." },
+        { q: "ما ثمرة علم الفقه الأولى كما ذكر الشيخ؟", opts: ["الشهرة بين الناس", "تصحيح العبادات والمعاملات", "حفظ المتون", "نيل الشهادات"], c: 1, exp: "أول ثمرة لعلم الفقه: تصحيح العبادات والمعاملات — فالعبادة ينبغي أن تكون صحيحة وفق الشرع." },
+        { q: "ماذا قال حذيفة بن اليمان للرجل الذي يصلي منذ 40 سنة؟", opts: ["أحسنت صلاتك", "لو متّ متّ على غير فطرة — لأن صلاته لم تكن صحيحة", "زِد في صلاتك", "علّم غيرك الصلاة"], c: 1, exp: "قال حذيفة: تصلي منذ 40 سنة ولو متّ متّ على غير فطرة — لأن صلاته لم تكن على هَدي النبي ﷺ، مما يدل على أهمية الفقه." },
+        { q: "ما أقدم كتاب فقه بين أيدينا؟", opts: ["الأمّ للشافعي", "المبسوط للسرخسي", "الموطأ للإمام مالك", "المغني لابن قدامة"], c: 2, exp: "أقدم كتاب فقه بين أيدينا هو الموطأ للإمام مالك رحمه الله تعالى." },
+        { q: "ما المقرر المعتمد لدراسة الفقه في الأكاديمية؟", opts: ["مختصر خليل", "نظم ابن عاشر", "متن أبي شجاع", "العمدة لابن قدامة"], c: 1, exp: "المقرر هو نظم الإمام عبد الواحد بن أحمد بن علي بن عاشر رحمه الله." },
+        { q: "ما هي الأقسام الأربعة الكبرى لمسائل الفقه؟", opts: ["التوحيد والتفسير والحديث والسيرة", "العبادات والمعاملات والمناكحات والعقوبات", "الإيمان والإسلام والإحسان والساعة", "الطهارة والصلاة والزكاة والحج فقط"], c: 1, exp: "مسائل الفقه الكبرى أربعة: العبادات، المعاملات، المناكحات (أحكام الأسرة)، العقوبات (الأحكام الجنائية)." }
+      ],
+      revision: [
+        { q: "ما معنى الفقه لغةً واصطلاحًا؟", a: "لغةً: الفهم (وقيل أخصّ وأدقّ من الفهم). اصطلاحًا: العلم بالأحكام الشرعية العملية المكتسب من أدلتها التفصيلية." },
+        { q: "ما المادة اللغوية المثلّثة للفقه؟", a: "فَقِهَ (بكسر القاف): فَهِم وعَلِم. فَقُهَ (بضم القاف): صار الفقه له سجيةً. فَقَهَ (بفتح القاف): سبق غيره في الفقه." },
+        { q: "اشرح قيود تعريف الفقه الاصطلاحي.", a: "العلم: إدراك الشيء على ما هو عليه. بالأحكام: يُخرج العلم بالذوات والصفات. الشرعية: يُخرج العقلي والعادي. العملية: يُخرج الاعتقادية. المكتسب: يُخرج ما يقذفه الله في قلوب أنبيائه. من أدلتها التفصيلية: كل حكم مع دليله." },
+        { q: "ما أنواع الأحكام الثلاثة مع أمثلة؟", a: "① شرعي: يُدرك بالشرع (الصلاة واجبة). ② عقلي: يُدرك بالعقل (الكلّ أكبر من الجزء). ③ عادي: يُدرك بالعادة والتجربة (الثلج بارد، النار تحرق)." },
+        { q: "ما موضوع علم الفقه؟", a: "أفعال المكلّفين من حيث ما يثبت لها من أحكام: وجوب، حرمة، إباحة، ندب، كراهة." },
+        { q: "اذكر ثمرات علم الفقه.", a: "① تصحيح العبادات والمعاملات. ② حسن امتثال الأمر وترك النهي (التقوى). ③ تحصيل رضا الله ونيل الأجر. ④ انتظام أمر المعاش والمعاد." },
+        { q: "ما نسبة الفقه إلى العلوم الأخرى وما فضله؟", a: "هو من العلوم الشرعية والنسبة بينه وبينها التباين (مستقل). فضله: ﴿ليتفقهوا في الدين﴾ + «من يرد الله به خيرًا يفقهه في الدين». قال الشافعي: «من طلب الفقه نبُل قدره»." },
+        { q: "مَن واضع علم الفقه؟ ومَن أوّل مَن أخرجه؟", a: "الواضع ابتداءً: الله تعالى (أنزل الأحكام) ← النبي ﷺ (علّمها) ← الصحابة ← التابعون. أول من أخرجه في صورته المعروفة: الإمام أبو حنيفة. وأقدم كتاب فقه: الموطأ للإمام مالك." },
+        { q: "ما أسماء علم الفقه؟", a: "علم الفقه، علم الفروع، علم الحلال والحرام، علم الأحكام والشرائع — والمسمّى واحد." },
+        { q: "من أين يُستمدّ علم الفقه؟", a: "يُستمدّ من: ① الكتاب العزيز ② السنة المطهرة ③ إجماع العلماء ④ القياس ⑤ اللغة العربية." },
+        { q: "ما حكم تعلّم الفقه؟", a: "واجب — وينقسم إلى: عيني (يجب على كل مكلف معرفة ما يباشره من عبادات ومعاملات) وكفائي (يسقط بفعل البعض عن الباقين)." },
+        { q: "ما الأقسام الأربعة الكبرى لمسائل الفقه؟", a: "① العبادات (صلاة، زكاة، صيام، حج). ② المعاملات (بيوع، إجارة، رهن، شركة). ③ المناكحات (زواج، طلاق، رضاع، حضانة). ④ العقوبات (حدود القتل، السرقة، الزنا، شرب الخمر)." }
+      ],
+      maps: [
+        { caption: "فضل طلب العلم وآدابه", dataUrl: "img/map_fiqh_1.png" },
+        { caption: "مبادئ علم الفقه — الحدّ والموضوع والثمرة", dataUrl: "img/map_fiqh_2.png" },
+        { caption: "مبادئ علم الفقه — النسبة والفضل والواضع والاسم والاستمداد والحكم والمسائل", dataUrl: "img/map_fiqh_3.png" }
+      ]
+    }
+  ]
+};
+
+/* ════════════════════════════════════════════════════════
+   STATE
+   ════════════════════════════════════════════════════════ */
+let currentYear = "y1";
+let currentSubject = "sira";
+let currentLessonIdx = 0;
+let currentView = "summary";
+
+let currentMode = "lessons"; // "lessons" or "attachments"
+
+const ATTACHMENTS = {
+  sira: {
+    subject: "السيرة النبوية",
+    items: []
+  },
+  tajwid: {
+    subject: "التجويد",
+    items: [
+      { name: "متن الجزرية", type: "matn", icon: "📕", url: "" },
+    ]
+  },
+  tawhid: { subject: "التوحيد والعقيدة", items: [] },
+  nahw: { subject: "النحو", items: [] },
+  tazkia: { subject: "التزكية والأخلاق", items: [] },
+  fiqh: { subject: "الفقه", items: [] },
+  adab: { subject: "آداب طالب العلم", items: [] }
+};
+
+
+function storageGet(key, fallback) {
+  try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; } catch(e) { return fallback; }
+}
+function storageSet(key, val) {
+  try { localStorage.setItem(key, JSON.stringify(val)); } catch(e) {}
+}
+
+let quizState = storageGet("baji_quiz_v3", {});
+let knownState = storageGet("baji_known_v3", {});
+
+function qKey() { return `${currentSubject}_${currentLessonIdx}`; }
+
+/* ════════════════════════════════════════════════════════
+   RENDER: Years
+   ════════════════════════════════════════════════════════ */
+function renderYears() {
+  const bar = document.getElementById("yearBar");
+  bar.innerHTML = YEARS.map(y => {
+    const cls = y.id === currentYear ? "year-chip active" : "year-chip";
+    return `<div class="${cls}" data-id="${y.id}">
+      <span class="yc-icon">${y.icon}</span> ${y.name}
+    </div>`;
+  }).join("");
+  bar.querySelectorAll(".year-chip").forEach(el => {
+    el.onclick = () => {
+      currentYear = el.dataset.id;
+      const subs = SUBJECTS_BY_YEAR[currentYear] || [];
+      currentSubject = subs.length ? subs[0].id : "";
+      currentLessonIdx = 0;
+      renderAll();
+    };
+  });
+}
+
+/* ════════════════════════════════════════════════════════
+   RENDER: Subjects
+   ════════════════════════════════════════════════════════ */
+function renderSubjects() {
+  const bar = document.getElementById("subjectBar");
+  const subs = SUBJECTS_BY_YEAR[currentYear] || [];
+  if (!subs.length) {
+    bar.innerHTML = '<div style="padding:10px;color:var(--ink3);font-size:13px;text-align:center;width:100%">لم تُضَف مواد لهذه السنة بعد</div>';
+    return;
+  }
+  bar.innerHTML = subs.map(s => {
+    const lessons = LESSONS[s.id] || [];
+    const count = lessons.length;
+    const cls = s.id === currentSubject ? "subject-chip active" : "subject-chip";
+    return `<div class="${cls}" data-id="${s.id}">
+      <span class="chip-icon">${s.icon}</span> ${s.name}${count ? ` (${count})` : ""}
+    </div>`;
+  }).join("");
+  bar.querySelectorAll(".subject-chip").forEach(el => {
+    el.onclick = () => {
+      currentSubject = el.dataset.id;
+      currentLessonIdx = 0;
+      currentMode = "lessons";
+      renderAll();
+    };
+  });
+}
+
+
+/* ════════════════════════════════════════════════════════
+   RENDER: Mode Bar (دروس / مرفقات)
+   ════════════════════════════════════════════════════════ */
+function renderModeBar() {
+  const bar = document.getElementById("modeBar");
+  const subs = SUBJECTS_BY_YEAR[currentYear] || [];
+  if (!subs.length || !currentSubject) {
+    bar.innerHTML = "";
+    bar.style.display = "none";
+    return;
+  }
+  bar.style.display = "flex";
+  const modes = [
+    { id: "lessons", name: "الدروس", icon: "📚" },
+    { id: "attachments", name: "المرفقات", icon: "📎" }
+  ];
+  bar.innerHTML = modes.map(m => {
+    const cls = m.id === currentMode ? "mode-chip active" : "mode-chip";
+    return `<div class="${cls}" data-mode="${m.id}"><span class="mc-icon">${m.icon}</span> ${m.name}</div>`;
+  }).join("");
+  bar.querySelectorAll(".mode-chip").forEach(el => {
+    el.onclick = () => {
+      currentMode = el.dataset.mode;
+      renderModeBar();
+      updateVisibility();
+      if (currentMode === "attachments") renderAttachments();
+      else renderContent();
+    };
+  });
+}
+
+function updateVisibility() {
+  const lessonBar = document.getElementById("lessonBar");
+  const viewTabs = document.getElementById("viewTabs");
+  if (currentMode === "attachments") {
+    lessonBar.style.display = "none";
+    viewTabs.style.display = "none";
+  } else {
+    lessonBar.style.display = "flex";
+    viewTabs.style.display = "flex";
+  }
+}
+
+function renderAttachments() {
+  const mc = document.getElementById("mainContent");
+  const data = ATTACHMENTS[currentSubject];
+  if (!data || !data.items.length) {
+    mc.innerHTML = `<div class="empty-state">
+      <span class="es-icon">📎</span>
+      <b>المرفقات</b><br>
+      لم تُضَف مرفقات لهذه المادة بعد.<br>
+      <small style="color:var(--ink3);margin-top:8px;display:block">يمكن إضافة: المتن المدروس، الشرح، التفريغات، أو أي ملف من الأكاديمية</small>
+    </div>`;
+    return;
+  }
+  
+  const typeLabels = {
+    matn: { label: "متن", color: "var(--quran-bg)", border: "var(--quran-border)", text: "var(--quran-text)" },
+    sharh: { label: "شرح", color: "var(--hadith-bg)", border: "var(--hadith-border)", text: "var(--hadith-text)" },
+    tafrighat: { label: "تفريغات", color: "var(--poetry-bg)", border: "var(--poetry-border)", text: "var(--poetry-text)" },
+    book: { label: "كتاب", color: "var(--def-bg)", border: "var(--def-border)", text: "var(--def-text)" },
+    other: { label: "ملف", color: "var(--benefit-bg)", border: "var(--benefit-border)", text: "var(--benefit-text)" }
+  };
+  
+  let html = `<div style="margin-bottom:12px"><div class="section-title"><span class="icon">📎</span>مرفقات مادة ${data.subject}</div></div>`;
+  
+  data.items.forEach(item => {
+    const t = typeLabels[item.type] || typeLabels.other;
+    const hasUrl = item.url && item.url.length > 0;
+    html += `<div style="background:var(--surface);border-radius:var(--radius);padding:14px 16px;margin:8px 0;box-shadow:var(--shadow);border:1px solid var(--border);display:flex;align-items:center;gap:12px">
+      <span style="font-size:28px;flex-shrink:0">${item.icon || "📄"}</span>
+      <div style="flex:1">
+        <div style="font-weight:600;font-size:14px">${item.name}</div>
+        <span style="display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;background:${t.color};color:${t.text};border:1px solid ${t.border};margin-top:4px">${t.label}</span>
+      </div>
+      ${hasUrl ? `<a href="${item.url}" target="_blank" rel="noopener" style="padding:6px 14px;border-radius:6px;background:var(--accent);color:#FFF;text-decoration:none;font-size:12px;font-weight:600;white-space:nowrap">📥 تحميل</a>` : `<span style="font-size:11px;color:var(--ink3)">قريبًا</span>`}
+    </div>`;
+  });
+  
+  mc.innerHTML = html;
+}
+
+/* ════════════════════════════════════════════════════════
+   RENDER: Lessons dropdown
+   ════════════════════════════════════════════════════════ */
+function renderLessons() {
+  const sel = document.getElementById("lessonSelect");
+  const lessons = LESSONS[currentSubject] || [];
+  if (!lessons.length) {
+    sel.innerHTML = '<option>لا توجد دروس بعد</option>';
+    sel.disabled = true;
+    return;
+  }
+  sel.disabled = false;
+  sel.innerHTML = lessons.map((l, i) =>
+    `<option value="${i}" ${i === currentLessonIdx ? "selected" : ""}>الدرس ${l.num}: ${l.title}</option>`
+  ).join("");
+  sel.onchange = () => {
+    currentLessonIdx = parseInt(sel.value);
+    renderContent();
+  };
+}
+
+/* ════════════════════════════════════════════════════════
+   RENDER: Tabs
+   ════════════════════════════════════════════════════════ */
+function renderTabs() {
+  document.querySelectorAll(".view-tab").forEach(t => {
+    t.classList.toggle("active", t.dataset.view === currentView);
+    t.onclick = () => {
+      currentView = t.dataset.view;
+      renderTabs();
+      renderContent();
+    };
+  });
+}
+
+/* ════════════════════════════════════════════════════════
+   RENDER: Content dispatcher
+   ════════════════════════════════════════════════════════ */
+function renderContent() {
+  const mc = document.getElementById("mainContent");
+  const lessons = LESSONS[currentSubject] || [];
+  if (!lessons.length) {
+    mc.innerHTML = `<div class="empty-state"><span class="es-icon">📚</span>لم تُضَف دروس لهذه المادة بعد.<br>أرسل نصّ الدرس لإضافته.</div>`;
+    return;
+  }
+  const lesson = lessons[currentLessonIdx];
+  if (!lesson) { mc.innerHTML = ""; return; }
+
+  switch (currentView) {
+    case "summary": renderSummary(mc, lesson); break;
+    case "map":     renderMap(mc, lesson); break;
+    case "quiz":    renderQuiz(mc, lesson); break;
+    case "revision":renderRevision(mc, lesson); break;
+  }
+}
+
+/* ── Utility: line-break before circled numbers ── */
+function fmtNums(s) { return s ? s.replace(/ ([①②③④⑤⑥⑦⑧⑨⑩])/g, '<br>$1') : ''; }
+
+/* ════════════════════════════════════════════════════════
+   RENDER: Summary
+   ════════════════════════════════════════════════════════ */
+function renderSummary(mc, lesson) {
+  let html = "";
+  (lesson.summary || []).forEach(section => {
+    html += `<div class="section-title"><span class="icon">📌</span>${section.heading}</div>`;
+    (section.items || []).forEach(item => {
+      const c = item.content ? fmtNums(item.content) : '';
+      switch (item.type) {
+        case "text":
+          html += `<div class="summary-text">${c}</div>`;
+          break;
+        case "quran":
+          html += `<div class="box box-quran"><div class="box-label">🟢 آية قرآنية</div>${c}</div>`;
+          break;
+        case "hadith":
+          html += `<div class="box box-hadith"><div class="box-label">🟠 حديث نبوي</div>${c}</div>`;
+          break;
+        case "poetry":
+          html += `<div class="box box-poetry"><div class="box-label">🟣 أبيات / منظومة</div><div style="white-space:pre-wrap;font-family:'Amiri',serif;font-size:15px;line-height:2">${c}</div></div>`;
+          break;
+        case "benefit":
+          html += `<div class="box box-benefit"><div class="box-label">💎 فائدة</div>${c}</div>`;
+          break;
+        case "warning":
+          html += `<div class="box box-warning"><div class="box-label">⚠️ تنبيه</div>${c}</div>`;
+          break;
+        case "def":
+          html += `<div class="box box-def"><div class="box-label">📘 تعريف / ضابط</div>${c}</div>`;
+          break;
+        case "table":
+          html += `<table class="data-table"><thead><tr>`;
+          item.headers.forEach(h => html += `<th>${h}</th>`);
+          html += `</tr></thead><tbody>`;
+          item.rows.forEach(r => {
+            html += `<tr>`;
+            r.forEach(cell => html += `<td>${cell}</td>`);
+            html += `</tr>`;
+          });
+          html += `</tbody></table>`;
+          break;
+      }
+    });
+  });
+
+  /* Export PDF button */
+  html += `<button class="btn-export" onclick="exportFile()"><span class="exp-icon">📄</span>تصدير الملخص PDF</button>`;
+
+  mc.innerHTML = html;
+}
+
+/* ════════════════════════════════════════════════════════
+   EXPORT PDF via html2pdf.js + downloads capability
+   ════════════════════════════════════════════════════════ */
+async function exportFile() {
+  var subj = SUBJECTS_BY_YEAR[currentYear].find(function(s){ return s.id === currentSubject; });
+  var lessons = LESSONS[currentSubject] || [];
+  var lesson = lessons[currentLessonIdx];
+  if (!subj || !lesson) return;
+
+  var btn = document.querySelector('.btn-export');
+  var origText = btn.innerHTML;
+  btn.innerHTML = '<span class="exp-icon">⏳</span>جارٍ التصدير...';
+  btn.disabled = true;
+
+  try {
+    /* Standalone browser download helper */
+    var dl = {
+      save: function(opts) {
+        var a = document.createElement('a');
+        var blob = (opts.data instanceof Blob) ? opts.data : new Blob([opts.data], {type:'application/octet-stream'});
+        var url = URL.createObjectURL(blob);
+        a.href = url;
+        a.download = opts.filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(function(){ URL.revokeObjectURL(url); }, 5000);
+        return Promise.resolve();
+      }
+    };
+    if (document.fonts && document.fonts.ready) await document.fonts.ready;
+
+    var lessonTitle = subj.name + ' — الدرس ' + lesson.num + ': ' + lesson.title;
+
+    /* ─── Helper: build one item's HTML from data ─── */
+    function itemHtml(item) {
+      var t = item.type || 'text';
+      var txt = typeof item === 'string' ? item : (item.content || item.text || item.html || '');
+      txt = fmtNums(txt);
+
+      var base = 'margin:0 0 10px;padding:12px 16px;border-radius:6px;font-size:14px;line-height:1.9;word-wrap:break-word;overflow-wrap:break-word;';
+
+      if (t === 'quran') {
+        return '<div style="' + base + 'background:#FDF6EC;border-right:4px solid #C8A84E;font-family:Amiri,serif;font-size:16px;line-height:2.1;text-align:center;color:#5D4E37;">' + txt + '</div>';
+      } else if (t === 'hadith') {
+        return '<div style="' + base + 'background:#F0F7F4;border-right:4px solid #2E7D5B;">' + txt + '</div>';
+      } else if (t === 'benefit') {
+        return '<div style="' + base + 'background:#EEF7FF;border-right:4px solid #2B7BBF;">' + txt + '</div>';
+      } else if (t === 'warning') {
+        return '<div style="' + base + 'background:#FFF5F5;border-right:4px solid #C53030;">' + txt + '</div>';
+      } else if (t === 'def') {
+        return '<div style="' + base + 'background:#F5F0FF;border-right:4px solid #6B46C1;">' + txt + '</div>';
+      } else if (t === 'poetry') {
+        return '<div style="' + base + 'background:#FFFBEB;border-right:4px solid #D69E2E;font-family:Amiri,serif;font-size:15px;line-height:2.1;text-align:center;">' + txt + '</div>';
+      } else if (t === 'table') {
+        var h = '<table style="width:100%;border-collapse:collapse;margin:0 0 10px;font-size:13px;table-layout:fixed;word-wrap:break-word;">';
+        if (item.headers) {
+          h += '<thead><tr>';
+          item.headers.forEach(function(hd){ h += '<th style="background:#0D3B2E;color:#fff;padding:8px 10px;text-align:right;font-weight:600;">' + hd + '</th>'; });
+          h += '</tr></thead>';
+        }
+        if (item.rows) {
+          h += '<tbody>';
+          item.rows.forEach(function(row, ri){
+            h += '<tr>';
+            row.forEach(function(cell){ h += '<td style="padding:7px 10px;border-bottom:1px solid #E5E7EB;text-align:right;word-wrap:break-word;' + (ri % 2 === 1 ? 'background:#F9FAFB;' : '') + '">' + cell + '</td>'; });
+            h += '</tr>';
+          });
+          h += '</tbody>';
+        }
+        h += '</table>';
+        return h;
+      } else {
+        return '<div style="' + base + 'background:#F8FAF9;border-right:4px solid #0D3B2E;">' + txt + '</div>';
+      }
+    }
+
+    /* ─── Build clean content HTML from lesson data ─── */
+    var contentHtml = '';
+    if (lesson.summary && lesson.summary.length) {
+      lesson.summary.forEach(function(section) {
+        contentHtml += '<div style="background:#0D3B2E;color:#fff;padding:9px 16px;border-radius:6px;font-size:15px;font-weight:700;margin:18px 0 10px;">' + (section.heading || section.title || '') + '</div>';
+        if (section.items && section.items.length) {
+          section.items.forEach(function(item) {
+            contentHtml += itemHtml(item);
+          });
+        }
+      });
+    }
+
+    /* ─── Create render wrapper with fully controlled styles ─── */
+    var wrap = document.createElement('div');
+    wrap.style.cssText = 'position:fixed;left:0;top:0;width:750px;z-index:99998;background:#FFFFFF;color:#1A1A1A;padding:30px 26px;direction:rtl;font-family:"Noto Naskh Arabic",Tahoma,sans-serif;line-height:1.9;overflow:hidden;';
+
+    wrap.innerHTML = ''
+      /* Header */
+      + '<div style="text-align:center;margin-bottom:20px;padding-bottom:14px;border-bottom:2px solid #0D3B2E;">'
+      + '<div style="font-family:Amiri,serif;font-size:13px;color:#999;margin-bottom:6px;">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>'
+      + '<div style="font-size:22px;font-weight:700;color:#0D3B2E;">أكاديمية الإمام الباجي</div>'
+      + '<div style="font-size:14px;color:#555;margin-top:4px;">' + subj.icon + ' ' + lessonTitle + '</div>'
+      + (subj.sheikh ? '<div style="font-size:13px;color:#666;margin-top:2px;">الشيخ: ' + subj.sheikh + '</div>' : '')
+      + '<div style="font-size:12px;color:#999;margin-top:4px;">الطالب: إبراهيم قلات</div>'
+      + '</div>'
+      /* Content built from data */
+      + contentHtml
+      /* Footer */
+      + '<div style="text-align:center;margin-top:24px;padding-top:10px;border-top:1px solid #E0E0E0;font-size:11px;color:#999;">أكاديمية الإمام الباجي — الطالب: إبراهيم قلات</div>';
+
+    document.body.appendChild(wrap);
+    await new Promise(function(r){ setTimeout(r, 400); });
+
+    var pdfGenerated = false;
+
+    if (typeof html2canvas === 'function') {
+      try {
+        var canvas = await html2canvas(wrap, {
+          scale: 2,
+          useCORS: true,
+          allowTaint: true,
+          logging: false,
+          width: 750,
+          windowWidth: 750,
+          scrollY: -window.scrollY
+        });
+
+        /* Check if canvas has actual content */
+        var ctx = canvas.getContext('2d');
+        var sampleData = ctx.getImageData(0, 0, Math.min(canvas.width, 500), Math.min(canvas.height, 300)).data;
+        var nonWhite = 0;
+        for (var i = 0; i < sampleData.length; i += 4) {
+          if (sampleData[i] < 245 || sampleData[i+1] < 245 || sampleData[i+2] < 245) {
+            nonWhite++;
+            if (nonWhite > 50) break;
+          }
+        }
+
+        if (nonWhite > 50) {
+          var jsPDFClass = (window.jspdf && window.jspdf.jsPDF) || window.jsPDF;
+          if (jsPDFClass) {
+            var pxW = canvas.width;
+            var pxH = canvas.height;
+            var pageW = 210;
+            var pageH = 297;
+            var margin = 10;
+            var contentW = pageW - margin * 2;
+            var scaledH = (pxH / pxW) * contentW;
+            var pageContentH = pageH - margin * 2;
+
+            var pdf = new jsPDFClass({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+            var totalPages = Math.ceil(scaledH / pageContentH);
+
+            for (var p = 0; p < totalPages; p++) {
+              if (p > 0) pdf.addPage();
+
+              /* Slice canvas for this page */
+              var srcY = Math.round((p * pageContentH / scaledH) * pxH);
+              var srcH = Math.round(Math.min((pageContentH / scaledH) * pxH, pxH - srcY));
+              if (srcH <= 0) break;
+
+              var pageCanvas = document.createElement('canvas');
+              pageCanvas.width = pxW;
+              pageCanvas.height = srcH;
+              var pCtx = pageCanvas.getContext('2d');
+              pCtx.fillStyle = '#FFFFFF';
+              pCtx.fillRect(0, 0, pxW, srcH);
+              pCtx.drawImage(canvas, 0, srcY, pxW, srcH, 0, 0, pxW, srcH);
+
+              var sliceData = pageCanvas.toDataURL('image/jpeg', 0.92);
+              var destH = (srcH / pxH) * scaledH;
+              pdf.addImage(sliceData, 'JPEG', margin, margin, contentW, destH);
+            }
+
+            var pdfBlob = pdf.output('blob');
+            if (pdfBlob.size > 5000) {
+              var fileName = subj.name + ' - الدرس ' + lesson.num + ' - ' + lesson.title + '.pdf';
+              await dl.save({ filename: fileName, data: pdfBlob });
+              pdfGenerated = true;
+            }
+          }
+        }
+      } catch(e) {
+        /* html2canvas failed, fall through */
+      }
+    }
+
+    document.body.removeChild(wrap);
+
+    /* Fallback: save as styled HTML with auto-print */
+    if (!pdfGenerated) {
+      var htmlFallback = '<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">'
+        + '<title>' + lessonTitle + '</title>'
+        + '<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">'
+        + '<style>'
+        + '*{box-sizing:border-box;margin:0;padding:0}'
+        + 'body{font-family:"Noto Naskh Arabic",Tahoma,sans-serif;background:#F3F4F6;color:#1A1A1A;direction:rtl;line-height:1.9;padding:0}'
+        + '@media print{@page{size:A4;margin:15mm 12mm}body{background:#fff!important;padding:0!important}.pc{box-shadow:none!important;margin:0!important;border-radius:0!important}.no-print{display:none!important}}'
+        + '@media screen{body{padding:20px}}'
+        + '.pc{max-width:800px;margin:0 auto;background:#fff;padding:32px 28px;border-radius:14px;box-shadow:0 2px 16px rgba(0,0,0,.07)}'
+        + '</style></head><body><div class="pc">'
+        + wrap.innerHTML
+        + '</div>'
+        + '<div class="no-print" style="text-align:center;margin:20px;font-family:sans-serif;color:#666;font-size:14px;">'
+        + '<button onclick="window.print()" style="background:#0D3B2E;color:#fff;border:none;padding:10px 28px;border-radius:8px;font-size:15px;cursor:pointer;font-family:Noto Naskh Arabic,sans-serif;">🖨️ طباعة / حفظ PDF</button>'
+        + '</div>'
+        + '<script>window.onload=function(){setTimeout(function(){window.print()},800)};<\/script>'
+        + '</body></html>';
+
+      var fileName = subj.name + ' - الدرس ' + lesson.num + ' - ' + lesson.title + '.html';
+      var htmlBlob = new Blob([htmlFallback], { type: 'text/html;charset=utf-8' });
+      await dl.save({ filename: fileName, data: htmlBlob });
+    }
+
+    btn.innerHTML = '<span class="exp-icon">✅</span>تم التصدير';
+    btn.disabled = false;
+    setTimeout(function(){ btn.innerHTML = origText; }, 2500);
+
+  } catch(err) {
+    btn.innerHTML = origText;
+    btn.disabled = false;
+  }
+}
+
+/* ════════════════════════════════════════════════════════
+   RENDER: Map (academy images)
+   ════════════════════════════════════════════════════════ */
+function renderMap(mc, lesson) {
+  const maps = lesson.maps || [];
+  const hasAcademyMaps = maps.length && maps.some(m => m.dataUrl);
+  const mm = lesson.mindmap;
+
+  if (!hasAcademyMaps && !mm) {
+    mc.innerHTML = `<div class="no-map-msg">
+      <span class="big-icon">🗺️</span>
+      <b>الخريطة الذهنية</b><br>
+      لم تُرفع خرائط ذهنية لهذا الدرس بعد.
+    </div>`;
+    return;
+  }
+
+  let html = '';
+
+  /* Academy-provided images */
+  if (hasAcademyMaps) {
+    html += `<div class="map-container">`;
+    maps.forEach((m, i) => {
+      if (!m.dataUrl) return;
+      html += `<div class="map-image-wrapper">
+        <img src="${m.dataUrl}" alt="${m.caption}">
+        <div class="map-caption">${m.caption}</div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+
+  /* Auto-generated mind map */
+  if (mm) {
+    if (hasAcademyMaps) html += `<div style="margin:18px 0 8px;font-size:13px;color:var(--ink3);text-align:center;">— خريطة ذهنية تلخيصية —</div>`;
+    html += `<div class="mm-wrap">`;
+    html += `<div class="mm-center">${mm.center}</div>`;
+    html += `<div class="mm-grid">`;
+    mm.branches.forEach(b => {
+      html += `<div class="mm-branch"><div class="mm-branch-title">${b.label}</div><div class="mm-items">`;
+      b.items.forEach(it => { html += `<div class="mm-item">${it}</div>`; });
+      html += `</div></div>`;
+    });
+    html += `</div></div>`;
+  }
+
+  mc.innerHTML = html;
+}
+
+/* ════════════════════════════════════════════════════════
+   RENDER: Quiz
+   ════════════════════════════════════════════════════════ */
+function renderQuiz(mc, lesson) {
+  const quiz = lesson.quiz || [];
+  if (!quiz.length) {
+    mc.innerHTML = `<div class="empty-state"><span class="es-icon">✅</span>لم تُضَف أسئلة لهذا الدرس بعد.</div>`;
+    return;
+  }
+
+  const key = qKey();
+  if (!quizState[key]) quizState[key] = { answers: {}, score: 0 };
+  const qs = quizState[key];
+  const total = quiz.length;
+  const answered = Object.keys(qs.answers).length;
+  const pct = total ? Math.round((answered / total) * 100) : 0;
+
+  let html = `<div class="quiz-progress">
+    <span class="score">${qs.score} / ${total}</span>
+    <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+    <span>${answered} / ${total}</span>
+  </div>`;
+
+  if (answered === total) {
+    const pctScore = Math.round((qs.score / total) * 100);
+    let emoji = pctScore >= 80 ? "🎉" : pctScore >= 50 ? "👍" : "💪";
+    html += `<div class="quiz-result">
+      <div class="big-score">${emoji} ${pctScore}%</div>
+      <div class="result-label">${qs.score} من ${total} إجابة صحيحة</div>
+      <button class="btn-retry" onclick="retryQuiz()">🔄 إعادة الاختبار</button>
+    </div>`;
+  }
+
+  quiz.forEach((item, i) => {
+    const userAnswer = qs.answers[i];
+    const isAnswered = userAnswer !== undefined;
+    html += `<div class="quiz-card">
+      <div class="quiz-q-num">السؤال ${i + 1} من ${total}</div>
+      <div class="quiz-q-text">${item.q}</div>`;
+
+    const letters = ["أ","ب","ج","د"];
+    item.opts.forEach((opt, oi) => {
+      let cls = "quiz-opt";
+      if (isAnswered) {
+        cls += " answered";
+        if (oi === item.c) cls += " correct";
+        else if (oi === userAnswer && userAnswer !== item.c) cls += " wrong";
+      }
+      html += `<button class="${cls}" data-qi="${i}" data-oi="${oi}" ${isAnswered ? "disabled" : ""}>${letters[oi]}. ${opt}</button>`;
+    });
+
+    html += `<div class="quiz-exp ${isAnswered ? "show" : ""}">${item.exp}</div>`;
+    html += `</div>`;
+  });
+
+  mc.innerHTML = html;
+
+  mc.querySelectorAll(".quiz-opt:not(.answered)").forEach(btn => {
+    btn.onclick = () => {
+      const qi = parseInt(btn.dataset.qi);
+      const oi = parseInt(btn.dataset.oi);
+      const item = quiz[qi];
+      qs.answers[qi] = oi;
+      if (oi === item.c) qs.score++;
+      storageSet("baji_quiz_v3", quizState);
+      renderQuiz(mc, lesson);
+    };
+  });
+}
+
+window.retryQuiz = function() {
+  const key = qKey();
+  quizState[key] = { answers: {}, score: 0 };
+  storageSet("baji_quiz_v3", quizState);
+  renderContent();
+};
+
+/* ════════════════════════════════════════════════════════
+   RENDER: Revision
+   ════════════════════════════════════════════════════════ */
+function renderRevision(mc, lesson) {
+  const rev = lesson.revision || [];
+  if (!rev.length) {
+    mc.innerHTML = `<div class="empty-state"><span class="es-icon">🔄</span>لم تُضَف بطاقات مراجعة لهذا الدرس بعد.</div>`;
+    return;
+  }
+
+  const key = qKey();
+  if (!knownState[key]) knownState[key] = {};
+  const ks = knownState[key];
+  const knownCount = Object.values(ks).filter(Boolean).length;
+  const total = rev.length;
+  const pct = total ? Math.round((knownCount / total) * 100) : 0;
+
+  let html = `<div class="rev-progress">
+    <div class="rp-text">✅ أتقنتُ <b>${knownCount}</b> من <b>${total}</b> بطاقة</div>
+    <div class="progress-bar" style="flex:1"><div class="progress-fill" style="width:${pct}%;background:#4CAF50"></div></div>
+  </div>`;
+
+  rev.forEach((item, i) => {
+    const isKnown = ks[i];
+    html += `<div class="rev-card ${isKnown ? "known" : ""}" data-ri="${i}">
+      <div class="rev-q"><span class="q-icon">❓</span><span>${item.q}</span></div>
+      <div class="rev-a" id="revA${i}">${fmtNums(item.a.replace(/\n/g, "<br>"))}</div>
+      <div class="rev-actions" id="revAct${i}">
+        <button class="btn-known ${isKnown ? "undo" : ""}" data-ri="${i}">${isKnown ? "↩️ لم أُتقنها بعد" : "✅ عرفتُها"}</button>
+      </div>
+    </div>`;
+  });
+
+  mc.innerHTML = html;
+
+  mc.querySelectorAll(".rev-card").forEach(card => {
+    card.onclick = (e) => {
+      if (e.target.classList.contains("btn-known")) return;
+      const ri = card.dataset.ri;
+      const aEl = document.getElementById("revA" + ri);
+      const actEl = document.getElementById("revAct" + ri);
+      aEl.classList.toggle("show");
+      actEl.classList.toggle("show");
+    };
+  });
+
+  mc.querySelectorAll(".btn-known").forEach(btn => {
+    btn.onclick = (e) => {
+      e.stopPropagation();
+      const ri = parseInt(btn.dataset.ri);
+      ks[ri] = !ks[ri];
+      storageSet("baji_known_v3", knownState);
+      renderRevision(mc, lesson);
+    };
+  });
+}
+
+/* ════════════════════════════════════════════════════════
+   RENDER ALL
+   ════════════════════════════════════════════════════════ */
+function renderAll() {
+  renderYears();
+  renderSubjects();
+  renderModeBar();
+  updateVisibility();
+  if (currentMode === "lessons") {
+    renderLessons();
+    renderTabs();
+    renderContent();
+  } else {
+    renderAttachments();
+  }
+}
+
+renderAll();
+</script>
+</body>
+</html>
